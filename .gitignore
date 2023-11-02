@@ -1,0 +1,16 @@
+pnpm-debug.log*
+
+.vscode
+*.sublime-workspace
+*.sublime-project
+
+node_modules
+dist
+
+*.tgz
+
+cypress/downloads
+cypress/screenshots
+
+.nuxt
+pnpm-lock.yaml
