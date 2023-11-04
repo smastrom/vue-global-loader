@@ -9,8 +9,5 @@ dist
 
 *.tgz
 
-cypress/downloads
-cypress/screenshots
-
 .nuxt
 pnpm-lock.yaml
