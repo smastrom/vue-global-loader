@@ -1,17 +1,21 @@
 {
    "compilerOptions": {
-      "target": "ES2015",
-      "module": "ES2020",
+      "target": "ES2018",
+      "module": "ESNext",
       "moduleResolution": "Node",
+      "outDir": "dist",
+      "declaration": true,
       "strict": true,
-      "resolveJsonModule": true,
       "isolatedModules": true,
-      "esModuleInterop": true,
-      "lib": ["ES2015", "DOM"],
+      "lib": ["ESNext", "ES2018", "DOM"],
       "skipLibCheck": true,
-      "noEmit": true,
+      "emitDeclarationOnly": true,
       "allowJs": true,
-      "checkJs": true
+      "checkJs": true,
+      "baseUrl": ".",
+      "paths": {
+         "vue-global-loader": ["./index.ts"]
+      }
    },
-   "include": ["."]
+   "include": ["./index.ts", "./components/*.vue"]
 }
