@@ -1,0 +1,29 @@
+{
+   "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+   "mainEntryPointFilePath": "./dist/index.d.ts",
+   "docModel": {
+      "enabled": false
+   },
+   "tsdocMetadata": {
+      "enabled": false
+   },
+   "apiReport": {
+      "enabled": false
+   },
+   "dtsRollup": {
+      "enabled": true,
+      "untrimmedFilePath": "./dist/index.d.ts"
+   },
+   "messages": {
+      "extractorMessageReporting": {
+         "default": {
+            "logLevel": "warning"
+         }
+      },
+      "tsdocMessageReporting": {
+         "default": {
+            "logLevel": "warning"
+         }
+      }
+   }
+}

@@ -6,7 +6,7 @@
       "node": ">=18.0.0"
    },
    "scripts": {
-      "dev": "pnpm build && concurrently \"pnpm -C packages/vue-global-loader run watch\" \"pnpm -C demo install && pnpm -C demo run dev --host\"",
+      "dev": "rm -rf dist && concurrently \"pnpm -C packages/vue-global-loader run watch\" \"pnpm -C playground install && pnpm -C playground run dev --host\"",
       "build": "pnpm -C packages/vue-global-loader run build",
       "prepare": "husky install"
    },
