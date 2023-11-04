@@ -1,0 +1,174 @@
+<script>
+import { defineComponent, ref, computed, reactive, nextTick, useCssModule } from 'vue'
+import { useGlobalLoader } from 'vue-global-loader'
+
+export default defineComponent({
+   setup() {
+      const m = useCssModule('m')
+
+      const { isLoading, options, __restoreOptions } = useGlobalLoader()
+
+      /** @type {import('vue').Ref<HTMLElement | null>} */
+      const rootRef = ref(null)
+
+      const prev = reactive({
+         /** @type {Element | HTMLElement | null} */
+         activeEl: null,
+         overflow: '',
+         pointerEvts: '',
+      })
+
+      /** @type {import('vue').ComputedRef<import('vue-global-loader').GlobalLoaderCSSVars>} */
+      const style = computed(() => ({
+         '--v-gl-color': options.foregroundColor,
+         '--v-gl-bg-color': options.backgroundColor,
+         '--v-gl-bg-opacity': options.backgroundOpacity,
+         '--v-gl-bg-blur': options.backgroundBlur + 'px',
+      }))
+
+      /** @type {import('vue').ComputedRef<import('vue').TransitionProps>} */
+      const transitionStyles = computed(() => {
+         if (options.playTransition) {
+            return {
+               enterActiveClass: m['Fade-enter-active'],
+               leaveActiveClass: m['Fade-leave-active'],
+               enterFromClass: m['Fade-enter-from'],
+               leaveToClass: m['Fade-leave-to'],
+            }
+         }
+         return { name: '' }
+      })
+
+      /**
+       * @param {Element | null} el - The element.
+       * @param {'focus' | 'blur'} method - The method to invoke.
+       */
+      function invokeEvent(el, method) {
+         if (el instanceof HTMLElement) el[method]()
+      }
+
+      // Both functions are called whether Transition is enabled or not (and also when canceled)
+
+      function onEnter() {
+         const { body, documentElement: html } = document
+         if (!html || !body || !rootRef.value) return
+
+         body.removeAttribute('aria-hidden')
+
+         prev.activeEl = document.activeElement
+
+         invokeEvent(prev.activeEl, 'blur')
+         invokeEvent(rootRef.value, 'focus')
+
+         // Better than aria-busy: https://www.tpgi.com/short-note-on-being-busy/
+         body.ariaHidden = 'true'
+
+         // Check if some styles are applied so we can restore previous values
+         if (html.hasAttribute('style') && html.style.overflow) {
+            prev.overflow = html.style.overflow
+         }
+
+         if (body.hasAttribute('style') && body.style.pointerEvents) {
+            prev.pointerEvts = body.style.pointerEvents
+         }
+
+         html.style.overflow = 'hidden'
+         body.style.pointerEvents = 'none'
+      }
+
+      function onAfterLeave() {
+         __restoreOptions()
+
+         const { body, documentElement: html } = document
+         if (!html || !body) return
+
+         body.removeAttribute('aria-hidden')
+
+         if (prev.overflow) {
+            html.style.overflow = prev.overflow
+            prev.overflow = ''
+         } else {
+            html.removeAttribute('style')
+         }
+
+         if (prev.pointerEvts) {
+            body.style.pointerEvents = prev.pointerEvts
+            prev.pointerEvts = ''
+         } else {
+            body.removeAttribute('style')
+         }
+
+         // Page could have changed and element been removed
+         nextTick(() => {
+            if (html.contains(prev.activeEl)) invokeEvent(prev.activeEl, 'focus')
+         })
+      }
+
+      return { transitionStyles, isLoading, options, rootRef, style, onEnter, onAfterLeave }
+   },
+})
+</script>
+
+<template>
+   <Teleport to="html">
+      <Transition
+         ref="rootRef"
+         v-bind="transitionStyles"
+         @enter="onEnter"
+         @after-leave="onAfterLeave"
+      >
+         <div :class="m.Bg" v-if="isLoading" :style="style" tabindex="0" role="alert">
+            <slot />
+
+            <div :class="m.Bg_Overlay"></div>
+            <div :class="m.SR" aria-live="assertive" role="alert">
+               {{ options.screenReaderMessage }}
+            </div>
+         </div>
+      </Transition>
+   </Teleport>
+</template>
+
+<style module="m">
+.Bg {
+   inset: 0;
+   position: fixed;
+   height: 100vh;
+   height: 100svh;
+   z-index: 2147483647;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   backdrop-filter: blur(var(--v-gl-bg-blur));
+}
+
+.Bg_Overlay {
+   width: 100%;
+   height: 100%;
+   position: absolute;
+   inset: 0;
+   z-index: -1;
+   background: var(--v-gl-bg-color);
+   opacity: var(--v-gl-bg-opacity);
+}
+
+.SR {
+   clip: rect(0 0 0 0);
+   clip-path: inset(50%);
+   height: 1px;
+   overflow: hidden;
+   position: absolute;
+   white-space: nowrap;
+   width: 1px;
+}
+
+.Fade-enter-active,
+.Fade-leave-active {
+   transition: opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.Fade-enter-from,
+.Fade-leave-to {
+   opacity: 0;
+}
+</style>
