@@ -1,3 +1,11 @@
 export default defineNuxtConfig({
-   devtools: { enabled: true },
+   modules: ['vue-global-loader/nuxt'],
+   devtools: {
+      enabled: true,
+   },
+   globalLoader: {
+      addPlugin: true,
+      backgroundOpacity: 0.5,
+      playTransition: true,
+   },
 })

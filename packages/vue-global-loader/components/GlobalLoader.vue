@@ -1,18 +1,18 @@
 <script>
 import GlobalLoaderImpl from './GlobalLoaderImpl.vue'
-import ClientOnly from './ClientOnly'
+import GlobalLoaderClientOnly from './GlobalLoaderClientOnly.js'
 
 // TODO: Consider if would be ok to forward attrs to the root
 
 export default {
-   components: { GlobalLoaderImpl, ClientOnly },
+   components: { GlobalLoaderImpl, GlobalLoaderClientOnly },
 }
 </script>
 
 <template>
-   <ClientOnly>
+   <GlobalLoaderClientOnly>
       <GlobalLoaderImpl>
          <slot />
       </GlobalLoaderImpl>
-   </ClientOnly>
+   </GlobalLoaderClientOnly>
 </template>

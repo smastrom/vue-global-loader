@@ -1,6 +1,7 @@
 import { createElementBlock, defineComponent, onMounted, ref } from 'vue'
 
 export default defineComponent({
+   name: 'GlobalLoaderClientOnly',
    setup(_, { slots, attrs }) {
       const isMounted = ref(false)
 

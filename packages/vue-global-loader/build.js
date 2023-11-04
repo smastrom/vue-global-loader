@@ -4,7 +4,7 @@ import { exec, execSync } from 'child_process'
 import { appendFileSync, readFileSync } from 'node:fs'
 import { readdir } from 'node:fs/promises'
 
-const internalComponents = ['GlobalLoaderImpl.vue', 'ClientOnly.js']
+const internalComponents = ['GlobalLoaderImpl.vue', 'GlobalLoaderClientOnly.js']
 
 const components = await readdir('components').then((files) => {
    let _internalComponents = 0

@@ -24,6 +24,11 @@
       ".": {
          "types": "./dist/index.d.ts",
          "import": "./dist/index.js"
+      },
+      "./nuxt": {
+         "import": "./nuxt/module.mjs",
+         "require": "./nuxt/module.cjs",
+         "types": "./nuxt/index.d.ts"
       }
    },
    "module": "dist/index.js",
@@ -50,9 +55,9 @@
       "typescript": "5.2.2"
    },
    "peerDependencies": {
-      "@nuxt/kit": ">=3.5.0",
-      "@nuxt/schema": ">=3.5.0",
-      "defu": ">=6"
+      "@nuxt/kit": ">=3.0.0",
+      "@nuxt/schema": ">=3.0.0",
+      "defu": ">=5"
    },
    "peerDependenciesMeta": {
       "@nuxt/kit": {

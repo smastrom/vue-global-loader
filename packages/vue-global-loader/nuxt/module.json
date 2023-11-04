@@ -1,0 +1,5 @@
+{
+   "name": "vue-global-loader/nuxt",
+   "configKey": "globalLoader",
+   "version": "0.9.0"
+}
