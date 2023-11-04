@@ -7,14 +7,13 @@ import { isSSR, noop } from './utils'
 export const injectionKey = Symbol('') as InjectionKey<GlobalLoaderStore>
 
 export class GlobalLoaderStore {
-   defaults: GlobalLoaderOptions
+   options: GlobalLoaderOptions
 
    prevOptions: GlobalLoaderOptions = { ...DEFAULT_OPTIONS }
-   options: GlobalLoaderOptions = reactive(DEFAULT_OPTIONS)
    isLoading = ref(false)
 
    constructor(config: Partial<GlobalLoaderOptions>) {
-      this.defaults = Object.assign({ ...DEFAULT_OPTIONS }, config)
+      this.options = reactive(Object.assign({ ...DEFAULT_OPTIONS }, config))
    }
 
    updateOptions(newOptions: Partial<GlobalLoaderOptions>) {
