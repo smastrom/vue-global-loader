@@ -13,13 +13,13 @@ defineComponent({ inheritAttrs: true })
 <style module="m">
 .Wrap {
    width: 160px;
-   fill: var(--v-gl-color);
+   stroke: var(--v-gl-color);
    transform-origin: center;
-   animation: spinner_zKoa 2s linear infinite;
+   animation: KF 2s linear infinite;
 }
 .Inner {
    stroke-linecap: round;
-   animation: spinner_YpZS 1.5s ease-in-out infinite;
+   animation: KF_Inner 1.5s ease-in-out infinite;
 }
 
 @keyframes KF {

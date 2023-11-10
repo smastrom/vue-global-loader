@@ -18,7 +18,7 @@ defineComponent({ inheritAttrs: true })
    fill: var(--v-gl-color);
 }
 .Anim_1 {
-   animation: KF 0.8s linear infinite;
+   animation: KF 1.2s linear infinite;
 }
 .Anim_2 {
    animation-delay: -0.65s;
