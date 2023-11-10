@@ -65,6 +65,7 @@ const selectId = 'spinner_select'
       width: 100%;
       border: none;
       background-color: transparent;
+      outline: none;
       appearance: none;
       -webkit-appearance: none;
    }

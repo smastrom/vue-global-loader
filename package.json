@@ -8,6 +8,7 @@
    "scripts": {
       "dev": "rm -rf dist && concurrently \"pnpm -C packages/vue-global-loader run watch\" \"pnpm -C playground install && pnpm -C playground run dev --host\"",
       "build": "pnpm -C packages/vue-global-loader run build",
+      "build:playground": "pnpm build && pnpm -C playground run build",
       "prepare": "husky install"
    },
    "devDependencies": {

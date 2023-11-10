@@ -37,7 +37,7 @@ export function getHead() {
          {
             hid: 'og:url',
             property: 'og:url',
-            content: 'https://notivue.pages.dev',
+            content: 'https://vue-global-loader.pages.dev',
          },
          {
             hid: 'twitter:title',

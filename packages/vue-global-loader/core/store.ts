@@ -57,10 +57,6 @@ export class GlobalLoaderStore {
    }
 }
 
-export function useStore() {
-   return inject(injectionKey)!
-}
-
 export function useGlobalLoader(scopedOptions: Partial<GlobalLoaderOptions> = {}) {
    if (isSSR) {
       return {
