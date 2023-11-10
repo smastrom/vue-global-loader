@@ -11,6 +11,8 @@
    },
    "devDependencies": {
       "@nuxt/devtools": "latest",
+      "browserslist": "^4.22.1",
+      "lightningcss": "^1.22.1",
       "nuxt": "^3.8.0",
       "vue": "^3.3.7",
       "vue-router": "^4.2.5"
