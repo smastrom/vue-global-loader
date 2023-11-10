@@ -15,7 +15,6 @@ const module = defineNuxtModule({
          nuxt: '>=3.0.0',
       },
    },
-
    async setup(moduleOptions, nuxt) {
       nuxt.options.runtimeConfig.public.globalLoader = defu(
          nuxt.options.runtimeConfig.public.globalLoader || {},
@@ -28,7 +27,7 @@ const module = defineNuxtModule({
             getContents() {
                return `
                   import { globalLoader } from 'vue-global-loader'
-                  import { defineNuxtPlugin, useRuntimeConfig } from '#app'               
+                  import { defineNuxtPlugin, useRuntimeConfig } from '#imports'               
    
                   export default defineNuxtPlugin(({ vueApp }) => {
                      const options = useRuntimeConfig().public?.globalLoader || {}

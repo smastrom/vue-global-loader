@@ -1,17 +1,19 @@
 import { ModuleOptions } from './module'
 
-interface GlobalLoaderNuxtOptions {
+interface ModuleField {
    ['globalLoader']?: ModuleOptions
 }
 
 declare module '@nuxt/schema' {
-   interface NuxtConfig extends GlobalLoaderNuxtOptions {}
-   interface NuxtOptions extends GlobalLoaderNuxtOptions {}
+   interface NuxtConfig extends ModuleField {}
+   interface NuxtOptions extends ModuleField {}
+   interface PublicRuntimeConfig extends ModuleField {}
 }
 
 declare module 'nuxt/schema' {
-   interface NuxtConfig extends GlobalLoaderNuxtOptions {}
-   interface NuxtOptions extends GlobalLoaderNuxtOptions {}
+   interface NuxtConfig extends ModuleField {}
+   interface NuxtOptions extends ModuleField {}
+   interface PublicRuntimeConfig extends ModuleField {}
 }
 
 export { ModuleOptions, default } from './module'

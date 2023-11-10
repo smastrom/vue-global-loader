@@ -2,6 +2,7 @@ import * as _nuxt_schema from '@nuxt/schema'
 
 import { GlobalLoaderOptions } from 'vue-global-loader'
 
+// Must use a Type and not an Interface
 type ModuleOptions = GlobalLoaderOptions & {
    /**
     * Whether to create and inject the global loader store in the Vue app. Equivalent of calling

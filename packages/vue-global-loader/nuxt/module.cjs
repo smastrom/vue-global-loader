@@ -1,4 +1,6 @@
+// @ts-ignore
 module.exports = function (...args) {
+   // @ts-ignore
    return import('./module.mjs').then((m) => m.default.call(this, ...args))
 }
 
