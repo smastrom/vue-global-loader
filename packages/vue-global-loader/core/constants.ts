@@ -2,7 +2,7 @@ import type { GlobalLoaderOptions } from './types'
 
 export const DEFAULT_OPTIONS: GlobalLoaderOptions = {
    screenReaderMessage: 'Loading...',
-   playTransition: true,
+   transitionDuration: 3000,
    foregroundColor: '#000',
    backgroundColor: '#fff',
    backgroundOpacity: 1,

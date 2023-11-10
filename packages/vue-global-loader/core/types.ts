@@ -3,7 +3,7 @@ import type { GlobalLoaderStore } from './store'
 
 export interface GlobalLoaderOptions {
    screenReaderMessage: string
-   playTransition: boolean
+   transitionDuration: number
    foregroundColor: string
    backgroundColor: string
    backgroundOpacity: number
@@ -15,6 +15,7 @@ export interface GlobalLoaderCSSVars extends CSSProperties {
    '--v-gl-bg-color': string
    '--v-gl-bg-opacity': number
    '--v-gl-bg-blur': string
+   '--v-gl-t-dur': string
 }
 
 export type { GlobalLoaderStore }

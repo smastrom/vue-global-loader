@@ -6,7 +6,7 @@ export default defineComponent({
    setup() {
       const m = useCssModule('m')
 
-      const { isLoading, options, __restoreOptions } = useGlobalLoader()
+      const { isLoading, options, __onDestroyed } = useGlobalLoader()
 
       /** @type {import('vue').Ref<HTMLElement | null>} */
       const rootRef = ref(null)
@@ -24,11 +24,12 @@ export default defineComponent({
          '--v-gl-bg-color': options.backgroundColor,
          '--v-gl-bg-opacity': options.backgroundOpacity,
          '--v-gl-bg-blur': options.backgroundBlur + 'px',
+         '--v-gl-t-dur': options.transitionDuration + 'ms',
       }))
 
       /** @type {import('vue').ComputedRef<import('vue').TransitionProps>} */
       const transitionStyles = computed(() => {
-         if (options.playTransition) {
+         if (options.transitionDuration > 0) {
             return {
                enterActiveClass: m['Fade-enter-active'],
                leaveActiveClass: m['Fade-leave-active'],
@@ -36,6 +37,7 @@ export default defineComponent({
                leaveToClass: m['Fade-leave-to'],
             }
          }
+
          return { name: '' }
       })
 
@@ -77,7 +79,7 @@ export default defineComponent({
       }
 
       function onAfterLeave() {
-         __restoreOptions()
+         __onDestroyed()
 
          const { body, documentElement: html } = document
          if (!html || !body) return
@@ -164,7 +166,7 @@ export default defineComponent({
 
 .Fade-enter-active,
 .Fade-leave-active {
-   transition: opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+   transition: opacity var(--v-gl-t-dur) cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .Fade-enter-from,
