@@ -1,7 +1,7 @@
 import * as esbuild from 'esbuild'
 
 import { exec, execSync } from 'child_process'
-import { appendFileSync, readFileSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { readdir } from 'node:fs/promises'
 
 const internalComponents = ['GlobalLoaderImpl.vue', 'GlobalLoaderClientOnly.js']
@@ -43,7 +43,7 @@ function getVueExports(names) {
  */
 function getVueDeclarations(names) {
    return names
-      .map((name) => `export declare const ${name}: import('vue').DefineComponent<{}, {}, any>;`)
+      .map((name) => `export declare const ${name}: import("vue").DefineComponent<{}, {}, any>;`)
       .join('\n')
 }
 
@@ -73,14 +73,16 @@ const dtsPlugin = {
          const start = Date.now()
          console.log('[esbuild-dts] - Bundling declaration...')
 
-         childProcess = exec('tsc && npx api-extractor run --local', (err) => {
-            if (err && err.signal !== 'SIGTERM') console.error(err)
-         })
+         childProcess = exec(
+            `tsc -p tsconfig.build.json && npx api-extractor run --local &&
+            echo '${getVueDeclarations(components)}' >> dist/index.d.ts`,
+            (err) => {
+               if (err && err.signal !== 'SIGTERM') console.error(err)
+            }
+         )
 
          childProcess.on('exit', (code, signal) => {
             if (code === 0) {
-               appendFileSync('dist/index.d.ts', getVueDeclarations(components))
-
                console.log(`[esbuild-dts] - Declaration complete in ${Date.now() - start}ms`)
 
                if (process.env.IS_BUILD) {

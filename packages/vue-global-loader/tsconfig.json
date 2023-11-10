@@ -8,6 +8,7 @@
       "strict": true,
       "isolatedModules": true,
       "lib": ["ESNext", "ES2018", "DOM"],
+      "resolveJsonModule": true,
       "skipLibCheck": true,
       "emitDeclarationOnly": true,
       "allowJs": true,
@@ -17,5 +18,5 @@
          "vue-global-loader": ["./index.ts"]
       }
    },
-   "include": ["./index.ts", "./components/*.vue"]
+   "include": ["."]
 }
