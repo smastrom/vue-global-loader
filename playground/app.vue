@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { GlobalLoaderOptions } from 'vue-global-loader'
-
 const { displayLoader, destroyLoader, isLoading, options } = useGlobalLoader()
+
+const { activeSpinner } = useStore()
 
 function onKeyDown(e: KeyboardEvent) {
    if (e.key === 'Escape') destroyLoader()
@@ -17,14 +17,20 @@ onBeforeUnmount(() => {
 })
 
 watchEffect(() => {
-   console.table({ isLoading: isLoading.value, ...toRaw(options) })
+   if (import.meta.env.DEV) {
+      console.table({
+         activeSpinner: activeSpinner.value,
+         isLoading: isLoading.value,
+         ...toRaw(options),
+      })
+   }
 })
 </script>
 
 <template>
-   <button @click="displayLoader">Display Loader</button>
+   <View />
 
    <LazyGlobalLoader>
-      <PulseSpinner />
+      <Component :is="pkgSpinners[activeSpinner]" />
    </LazyGlobalLoader>
 </template>
