@@ -6,6 +6,6 @@ export default defineNuxtConfig({
    globalLoader: {
       addPlugin: true,
       backgroundOpacity: 0.5,
-      playTransition: true,
+      transitionDuration: 300,
    },
 })
