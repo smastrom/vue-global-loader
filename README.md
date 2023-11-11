@@ -1,12 +1,8 @@
-### :construction_worker: WORK IN PROGRESS
-
----
-
-<br />
-
 # Vue Global Loader
 
 ### Global loaders made easy for Vue and Nuxt.
+
+[Live Demo](https://vue-global-loader.pages.dev/) — [Vite Example](https://stackblitz.com/edit/vitejs-vite-umqonc?file=src%2FApp.vue) — [Nuxt Example](https://stackblitz.com/edit/nuxt-starter-rpnobz?file=app.vue)
 
 <br />
 
@@ -25,7 +21,7 @@ Since I was creating and re-creating the same logic and markup over and over aga
 This package simplifies the usage of a single, top-level global loader by:
 
 - Installing a global store that sits above your routes, so you can control it between pages
-- Customizable via few key props (get started in 10 seconds)
+- Providing a practical API customizable via few key props (get started in 10 seconds)
 - Properly disable user interactions with the rest of the app while the loader is displayed
 - Announcing a screen reader message when the loader is displayed
 - Dynamically update global options from anywhere in the Vue app and set scoped options for the current loader
@@ -34,6 +30,14 @@ This package simplifies the usage of a single, top-level global loader by:
 
 ```bash
 pnpm add vue-global-loader
+```
+
+```bash
+yarn add vue-global-loader
+```
+
+```bash
+npm i vue-global-loader
 ```
 
 ## Usage
@@ -67,6 +71,8 @@ export default defineNuxtConfig({
 
 **2. App.vue (Vite) / app.vue (Nuxt)**
 
+> :bulb: No need to state the imports if using **Nuxt**.
+
 ```vue
 <script setup>
 import { GlobalLoader, RingSpinner } from 'vue-global-loader'
@@ -76,18 +82,6 @@ import { GlobalLoader, RingSpinner } from 'vue-global-loader'
   <GlobalLoader>
     <RingSpinner />
   </GlobalLoader>
-
-  <!-- RouterView, NuxtLayout, NuxtPage... -->
-</template>
-```
-
-If using **Nuxt**, enable code-splitting for the loader component, by prefixing it with `Lazy`:
-
-```vue
-<template>
-  <LazyGlobalLoader>
-    <RingSpinner />
-  </LazyGlobalLoader>
 
   <!-- RouterView, NuxtLayout, NuxtPage... -->
 </template>
@@ -110,11 +104,12 @@ async function createCheckout() {
       res.json()
     )
     window.location.href = checkoutUrl
-    // No need to call destroyLoader() on success (state is lost when redirecting to a different domain)
+    // No need to call destroyLoader() on success, state is lost when leaving the page
   } catch (err) {
     console.error(err)
     destroyLoader(() => {
-      console.log('Loader destroyed') // Logged when the loader is removed from the DOM
+      // Logged when the loader is removed from the DOM
+      console.log('Loader destroyed')
     })
   }
 }
@@ -147,7 +142,6 @@ export default {
           (res) => res.json()
         )
         window.location.href = checkoutUrl
-        // No need to call destroyLoader() on success (state is lost when redirecting to a different domain)
       } catch (err) {
         console.error(err)
         this.destroyLoader()
@@ -224,7 +218,7 @@ To use your own spinner, pass a custom SVG (or whatever) to the default slot:
 
 <style>
 .MySpinner {
-  fill: var(--v-global-loader-fg); /* Value of the 'foreground' prop */
+  fill: var(--v-gl-fg-color); /* Value of the 'foreground' prop */
   width: 100px;
   height: 100px;
 
@@ -238,14 +232,15 @@ To use your own spinner, pass a custom SVG (or whatever) to the default slot:
 
 ### Options
 
-| Prop                  | Type     | Description                                                        | Default   |
-| --------------------- | -------- | ------------------------------------------------------------------ | --------- |
-| `screenReaderMessage` | `string` | Message to announce when displaying the loader.                    | `Loading` |
-| `transitionDuration`  | `number` | Enter/leave fade transition duration in ms. Set `0` to disable it. | `300`     |
-| `foregroundColor`     | `string` | Color of the spinner.                                              | `#000`    |
-| `backgroundColor`     | `string` | Background color of the loading screen.                            | `#fff`    |
-| `backgroundOpacity`   | `number` | Background opacity of the loading screen.                          | `1`       |
-| `backgroundBlur`      | `number` | Background blur of the loading screen.                             | `0`       |
+| Prop                  | Type     | Description                                                        | Default      |
+| --------------------- | -------- | ------------------------------------------------------------------ | ------------ |
+| `screenReaderMessage` | `string` | Message to announce when displaying the loader.                    | `Loading`    |
+| `transitionDuration`  | `number` | Enter/leave fade transition duration in ms. Set `0` to disable it. | `300`        |
+| `foregroundColor`     | `string` | Color of the spinner.                                              | `#000`       |
+| `backgroundColor`     | `string` | Background color of the loading screen.                            | `#fff`       |
+| `backgroundOpacity`   | `number` | Background opacity of the loading screen.                          | `1`          |
+| `backgroundBlur`      | `number` | Background blur of the loading screen.                             | `0`          |
+| `zIndex`              | `number` | Z-index of the loading screen.                                     | `2147483647` |
 
 #### Plugin Options (Default
 
@@ -315,8 +310,6 @@ watch(
 </script>
 ```
 
-Defined options are merged with the current configuration, so only the ones needed can be defined.
-
 ## API
 
 ```ts
@@ -327,6 +320,7 @@ interface GlobalLoaderOptions {
   backgroundColor: string
   backgroundOpacity: number
   backgroundBlur: number
+  zIndex: number
 }
 
 declare function useGlobalLoader(
@@ -344,7 +338,7 @@ declare function useGlobalLoader(
 
 ### When to use it
 
-Use it when you think it's better for the user to not interact with the rest of the app or to not see what's happening in the UI while an expensive async operation **triggered by the user** is taking place.
+Use it when you think it's better for the user to not interact with the rest of the app or to not see what's happening in the UI while an expensive async operation **initiated by the user** is taking place.
 
 ### When to not use it
 
@@ -352,7 +346,7 @@ Use it when you think it's better for the user to not interact with the rest of 
 - Non-critical async operations that are quick and obvious, in such case a local loader is better (e.g. spinner in the newsletter form submit button).
 - Async operations meant to feed the content of small sub-components, in such case [Suspense](https://vuejs.org/guide/built-ins/suspense.html) is the way to go.
 - To display a loader while your app JS is loading. In this case:
-  - **Vite SPA** - Add the loader markup directly to the `index.html` file (e.g. `<div id="spa-loader">`) and remove it the app is ready in an _onMounted_ hook via `document.getElementById('spa-loader').remove()`.
+  - **Vite SPA** - Add the loader markup directly to the `index.html` file (e.g. `<div id="spa-loader">`) and remove it in a top-level (App.vue) _onMounted_ hook via `document.getElementById('spa-loader').remove()`.
   - **Nuxt** - Use the built-in [SPA loading indicator](https://nuxt.com/blog/v3-6#spa-loading-indicator).
 
 ## Thanks
