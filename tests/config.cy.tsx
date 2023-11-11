@@ -11,22 +11,50 @@ describe('Config', () => {
       },
    })
 
+   const routes = [
+      {
+         path: '/',
+         component: Home,
+      },
+   ]
+
    it('Default config is injected', () => {
-      cy.mountApp({}, [
-         {
-            path: '/',
-            component: Home,
-         },
-      ])
+      cy.mountApp({}, routes)
+         .getRoot()
+         .checkCssVars(DEF)
 
-      cy.getRoot()
+         .get('[aria-live]')
+         .should('contain.text', DEF.screenReaderMessage)
+   })
 
-         .should('have.attr', 'style')
-         .and('include', '--v-gl-bg-color: ' + DEF.backgroundColor)
-         .and('include', '--v-gl-bg-opacity: ' + DEF.backgroundOpacity)
-         .and('include', '--v-gl-bg-blur: ' + DEF.backgroundBlur)
-         .and('include', '--v-gl-color: ' + DEF.foregroundColor)
-         .and('include', '--v-gl-t-dur: ' + DEF.transitionDuration)
+   it('Custom config is injected', () => {
+      const customConf = {
+         backgroundColor: 'red',
+         backgroundOpacity: 0.5,
+         backgroundBlur: 10,
+         foregroundColor: 'blue',
+         transitionDuration: 1000,
+         screenReaderMessage: 'Custom message',
+      }
+
+      cy.mountApp(customConf, routes)
+         .getRoot()
+         .checkCssVars(customConf)
+
+         .get('[aria-live]')
+         .should('contain.text', customConf.screenReaderMessage)
+   })
+
+   it('Custom config overrides and is merged with default config', () => {
+      const customConf2 = {
+         backgroundColor: 'red',
+         backgroundOpacity: 0.5,
+         backgroundBlur: 10,
+      } as const
+
+      cy.mountApp(customConf2, routes)
+         .getRoot()
+         .checkCssVars({ ...DEF, ...customConf2 })
 
          .get('[aria-live]')
          .should('contain.text', DEF.screenReaderMessage)

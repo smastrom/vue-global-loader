@@ -11,6 +11,7 @@ declare global {
          mountApp(config: Partial<GlobalLoaderOptions>, routes: RouteRecordRaw[]): Chainable<any>
          getTransition(): Chainable<any>
          getRoot(): Chainable<any>
+         checkCssVars(config: Omit<GlobalLoaderOptions, 'screenReaderMessage'>): Chainable<any>
       }
    }
 }
@@ -48,3 +49,13 @@ Cypress.Commands.add(
 
 Cypress.Commands.add('getTransition', () => cy.get('transition-stub'))
 Cypress.Commands.add('getRoot', () => cy.getTransition().children())
+
+Cypress.Commands.add('checkCssVars', { prevSubject: 'element' }, (subject, config) => {
+   cy.wrap(subject)
+      .should('have.attr', 'style')
+      .and('include', '--v-gl-bg-color: ' + config.backgroundColor)
+      .and('include', '--v-gl-bg-opacity: ' + config.backgroundOpacity)
+      .and('include', '--v-gl-bg-blur: ' + config.backgroundBlur)
+      .and('include', '--v-gl-color: ' + config.foregroundColor)
+      .and('include', '--v-gl-t-dur: ' + config.transitionDuration)
+})
