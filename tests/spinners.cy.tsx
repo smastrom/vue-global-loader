@@ -1,4 +1,4 @@
-import { defineComponent as c, onMounted } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 import {
    GlobalLoader,
    useGlobalLoader,
@@ -25,13 +25,13 @@ describe('Spinners', () => {
          DotsSpinner,
          WaveSpinner,
       ].forEach((Spinner) => {
-         const app = c({
+         const app = defineComponent({
             setup() {
                const { displayLoader } = useGlobalLoader()
                onMounted(displayLoader)
 
                return () => (
-                  <GlobalLoader>
+                  <GlobalLoader data-cy-loader>
                      <Spinner />
                   </GlobalLoader>
                )
