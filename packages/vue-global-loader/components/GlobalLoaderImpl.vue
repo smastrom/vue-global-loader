@@ -3,6 +3,9 @@ import { defineComponent, ref, computed, reactive, nextTick, useCssModule } from
 import { useGlobalLoader } from '../dist'
 
 export default defineComponent({
+   props: {
+      __attrs: Object,
+   },
    setup() {
       const m = useCssModule('m')
 
@@ -106,7 +109,21 @@ export default defineComponent({
          })
       }
 
-      return { transitionStyles, isLoading, options, rootRef, style, onEnter, onAfterLeave }
+      function onCancel() {
+         console.log('onEnterCancelled')
+         onAfterLeave()
+      }
+
+      return {
+         transitionStyles,
+         isLoading,
+         options,
+         rootRef,
+         style,
+         onEnter,
+         onAfterLeave,
+         onCancel,
+      }
    },
 })
 </script>
@@ -117,9 +134,18 @@ export default defineComponent({
          ref="rootRef"
          v-bind="transitionStyles"
          @enter="onEnter"
-         @after-leave="onAfterLeave"
+         @afterLeave="onAfterLeave"
+         @enterCancelled="onCancel"
+         @leaveCancelled="onCancel"
       >
-         <div :class="m.Bg" v-if="isLoading" :style="style" tabindex="0" role="alert">
+         <div
+            v-bind="$props.__attrs"
+            :class="m.Bg"
+            v-if="isLoading"
+            :style="style"
+            tabindex="0"
+            role="alert"
+         >
             <slot />
 
             <div :class="m.Bg_Overlay"></div>

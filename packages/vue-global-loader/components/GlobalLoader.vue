@@ -2,8 +2,6 @@
 import GlobalLoaderImpl from './GlobalLoaderImpl.vue'
 import GlobalLoaderClientOnly from './GlobalLoaderClientOnly.js'
 
-// TODO: Consider if would be ok to forward attrs to the root
-
 export default {
    components: { GlobalLoaderImpl, GlobalLoaderClientOnly },
 }
@@ -11,7 +9,7 @@ export default {
 
 <template>
    <GlobalLoaderClientOnly>
-      <GlobalLoaderImpl>
+      <GlobalLoaderImpl :__attrs="$attrs">
          <slot />
       </GlobalLoaderImpl>
    </GlobalLoaderClientOnly>

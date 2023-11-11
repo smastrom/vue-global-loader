@@ -1,6 +1,6 @@
 import type { GlobalLoaderOptions } from './types'
 
-import { reactive, readonly, ref, inject, type InjectionKey } from 'vue'
+import { reactive, readonly, ref, inject, type InjectionKey, nextTick } from 'vue'
 import { DEFAULT_OPTIONS } from './constants'
 import { isSSR, noop } from './utils'
 
@@ -14,8 +14,8 @@ export class GlobalLoaderStore {
 
    __onDestroyedCb = noop
 
-   constructor(config: Partial<GlobalLoaderOptions>) {
-      this.options = reactive(Object.assign({ ...DEFAULT_OPTIONS }, config))
+   constructor(pluginConfig: Partial<GlobalLoaderOptions>) {
+      this.options = reactive(Object.assign({ ...DEFAULT_OPTIONS }, pluginConfig))
    }
 
    setOptions(newOptions: Partial<GlobalLoaderOptions>) {
@@ -33,27 +33,34 @@ export class GlobalLoaderStore {
    displayLoader(scopedOptions: Partial<GlobalLoaderOptions> = {}) {
       if (this.isLoading.value) return
 
-      console.log('[global-loader] - Saved global options (prev)!')
       this.setPrevOptions(this.options)
+      console.log('[global-loader] - Saved global options (prev)!')
 
-      console.log('[global-loader] - Set scoped options!')
       this.setOptions(scopedOptions)
+      console.log('[global-loader] - Set scoped options!')
 
-      this.setIsLoading(true)
+      nextTick(() => {
+         this.setIsLoading(true)
+      })
    }
 
-   destroyLoader(onDestroyed?: () => void) {
+   destroyLoader(extOnDestroyed?: () => void) {
       if (!this.isLoading.value) return
 
       console.log('[global-loader] - Destroying loader...')
-      this.__onDestroyedCb = onDestroyed || noop
-      this.setIsLoading(false)
+
+      this.__onDestroyedCb = typeof extOnDestroyed === 'function' ? extOnDestroyed : noop
+
+      nextTick(() => {
+         this.setIsLoading(false)
+      })
    }
 
    onDestroyed() {
-      console.log('[global-loader] - Loader destroyed, options restored!')
       this.__onDestroyedCb()
       this.setOptions(this.prevOptions)
+
+      console.log('[global-loader] - Loader destroyed, options restored!')
    }
 }
 
