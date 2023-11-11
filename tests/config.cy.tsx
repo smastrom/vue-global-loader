@@ -1,6 +1,8 @@
 import { defineComponent as c, onMounted } from 'vue'
 import { useGlobalLoader, DEFAULT_OPTIONS as DEF } from 'vue-global-loader'
 
+import App from '@/App.vue'
+
 describe('Config', () => {
    const Home = c({
       setup() {
@@ -19,7 +21,7 @@ describe('Config', () => {
    ]
 
    it('Default config is injected', () => {
-      cy.mountApp({}, routes)
+      cy.mountApp(App, {}, routes)
          .getRoot()
          .checkCssVars(DEF)
 
@@ -37,7 +39,7 @@ describe('Config', () => {
          screenReaderMessage: 'Custom message',
       }
 
-      cy.mountApp(customConf, routes)
+      cy.mountApp(App, customConf, routes)
          .getRoot()
          .checkCssVars(customConf)
 
@@ -52,7 +54,7 @@ describe('Config', () => {
          backgroundBlur: 10,
       } as const
 
-      cy.mountApp(customConf2, routes)
+      cy.mountApp(App, customConf2, routes)
          .getRoot()
          .checkCssVars({ ...DEF, ...customConf2 })
 

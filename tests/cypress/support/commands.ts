@@ -1,14 +1,16 @@
 import { mount } from 'cypress/vue'
 import { createMemoryHistory, createRouter, type RouteRecordRaw } from 'vue-router'
 
-import App from '@/App.vue'
-
 import { globalLoader, type GlobalLoaderOptions } from 'vue-global-loader'
 
 declare global {
    namespace Cypress {
       interface Chainable {
-         mountApp(config: Partial<GlobalLoaderOptions>, routes: RouteRecordRaw[]): Chainable<any>
+         mountApp(
+            app: any,
+            config?: Partial<GlobalLoaderOptions>,
+            routes?: RouteRecordRaw[]
+         ): Chainable<any>
          getTransition(): Chainable<any>
          getRoot(): Chainable<any>
          checkCssVars(config: Omit<GlobalLoaderOptions, 'screenReaderMessage'>): Chainable<any>
@@ -26,13 +28,13 @@ const defaultRoute = {
 
 Cypress.Commands.add(
    'mountApp',
-   (config: Partial<GlobalLoaderOptions> = {}, routes = [defaultRoute]) => {
+   (app: any, config: Partial<GlobalLoaderOptions> = {}, routes = [defaultRoute]) => {
       const router = createRouter({
          history: createMemoryHistory(),
          routes,
       })
 
-      return mount(App, {
+      return mount(app, {
          global: {
             plugins: [
                {
