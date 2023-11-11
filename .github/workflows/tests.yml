@@ -1,0 +1,41 @@
+name: Tests
+
+on:
+   pull_request:
+   push:
+      branches:
+         - '*'
+      tags-ignore:
+         - '*'
+   workflow_call:
+
+jobs:
+   cypress-run:
+      runs-on: ubuntu-latest
+      steps:
+         - uses: actions/checkout@v3
+         - name: Install Node.js
+           uses: actions/setup-node@v3
+           with:
+              node-version: 20
+         - uses: pnpm/action-setup@v2
+           name: Install pnpm
+           with:
+              version: 8
+              run_install: false
+         - name: Install Cypress binaries
+           run: npx cypress install
+         - name: Install dependecies
+           run: pnpm install
+         - name: Build Package
+           run: pnpm build
+         - name: Install Package
+           run: pnpm install
+         - name: Test with Cypress
+           uses: cypress-io/github-action@v5
+           timeout-minutes: 5
+           with:
+              component: true
+              install: false
+              working-directory: tests
+              browser: chrome
