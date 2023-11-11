@@ -1,5 +1,13 @@
 <script>
-import { defineComponent, ref, computed, reactive, nextTick, useCssModule } from 'vue'
+import {
+   defineComponent,
+   ref,
+   computed,
+   reactive,
+   nextTick,
+   useCssModule,
+   onBeforeUnmount,
+} from 'vue'
 import { useGlobalLoader } from '../dist'
 
 export default defineComponent({
@@ -28,6 +36,7 @@ export default defineComponent({
          '--v-gl-bg-opacity': options.backgroundOpacity,
          '--v-gl-bg-blur': options.backgroundBlur + 'px',
          '--v-gl-t-dur': options.transitionDuration + 'ms',
+         '--v-gl-z': options.zIndex,
       }))
 
       /** @type {import('vue').ComputedRef<import('vue').TransitionProps>} */
@@ -109,10 +118,7 @@ export default defineComponent({
          })
       }
 
-      function onCancel() {
-         console.log('onEnterCancelled')
-         onAfterLeave()
-      }
+      onBeforeUnmount(onAfterLeave)
 
       return {
          transitionStyles,
@@ -122,7 +128,6 @@ export default defineComponent({
          style,
          onEnter,
          onAfterLeave,
-         onCancel,
       }
    },
 })
@@ -135,8 +140,8 @@ export default defineComponent({
          v-bind="transitionStyles"
          @enter="onEnter"
          @afterLeave="onAfterLeave"
-         @enterCancelled="onCancel"
-         @leaveCancelled="onCancel"
+         @enterCancelled="onAfterLeave"
+         @leaveCancelled="onAfterLeave"
       >
          <div
             v-bind="$props.__attrs"
@@ -163,7 +168,7 @@ export default defineComponent({
    position: fixed;
    height: 100vh;
    height: 100svh;
-   z-index: 2147483647;
+   z-index: var(--v-gl-z);
    display: flex;
    justify-content: center;
    align-items: center;

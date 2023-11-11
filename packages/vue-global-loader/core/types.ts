@@ -8,6 +8,7 @@ export interface GlobalLoaderOptions {
    backgroundColor: string
    backgroundOpacity: number
    backgroundBlur: number
+   zIndex: number
 }
 
 export interface GlobalLoaderCSSVars extends CSSProperties {
@@ -16,6 +17,7 @@ export interface GlobalLoaderCSSVars extends CSSProperties {
    '--v-gl-bg-opacity': number
    '--v-gl-bg-blur': string
    '--v-gl-t-dur': string
+   '--v-gl-z': number
 }
 
 export type { GlobalLoaderStore }

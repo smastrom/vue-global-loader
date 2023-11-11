@@ -7,4 +7,5 @@ export const DEFAULT_OPTIONS: GlobalLoaderOptions = {
    backgroundColor: '#fff',
    backgroundOpacity: 1,
    backgroundBlur: 0,
+   zIndex: 2147483647,
 }

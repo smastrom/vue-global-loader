@@ -1,27 +1,27 @@
 import { defineComponent as c, onMounted } from 'vue'
-import { useGlobalLoader, DEFAULT_OPTIONS as DEF } from 'vue-global-loader'
-
-import App from '@/App.vue'
+import {
+   GlobalLoader,
+   CircleSpinner,
+   useGlobalLoader,
+   DEFAULT_OPTIONS as DEF,
+} from 'vue-global-loader'
 
 describe('Config', () => {
-   const Home = c({
+   const app = c({
       setup() {
          const { displayLoader } = useGlobalLoader()
          onMounted(displayLoader)
 
-         return null
+         return () => (
+            <GlobalLoader data-cy-loader>
+               <CircleSpinner />
+            </GlobalLoader>
+         )
       },
    })
 
-   const routes = [
-      {
-         path: '/',
-         component: Home,
-      },
-   ]
-
    it('Default config is injected', () => {
-      cy.mountApp(App, {}, routes)
+      cy.mountApp(app)
          .getRoot()
          .checkCssVars(DEF)
 
@@ -37,9 +37,10 @@ describe('Config', () => {
          foregroundColor: 'blue',
          transitionDuration: 1000,
          screenReaderMessage: 'Custom message',
+         zIndex: 1000,
       }
 
-      cy.mountApp(App, customConf, routes)
+      cy.mountApp(app, customConf)
          .getRoot()
          .checkCssVars(customConf)
 
@@ -54,7 +55,7 @@ describe('Config', () => {
          backgroundBlur: 10,
       } as const
 
-      cy.mountApp(App, customConf2, routes)
+      cy.mountApp(app, customConf2)
          .getRoot()
          .checkCssVars({ ...DEF, ...customConf2 })
 

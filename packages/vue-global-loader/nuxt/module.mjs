@@ -31,8 +31,7 @@ const module = defineNuxtModule({
    
                   export default defineNuxtPlugin(({ vueApp }) => {
                      const options = useRuntimeConfig().public?.globalLoader || {}
-                     console.log(options) // TODO: Remove
-
+                     
                      vueApp.use(globalLoader, options)
                   })           
                   `
