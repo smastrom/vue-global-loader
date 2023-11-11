@@ -27,9 +27,8 @@ export default defineNuxtConfig({
       },
    },
    globalLoader: {
-      addPlugin: true,
-      // backgroundOpacity: 0.5,
-      transitionDuration: 400,
+      // addPlugin: true,
+      transitionDuration: 300,
       backgroundColor: 'var(--light-1)',
       foregroundColor: 'var(--dark-1)',
    },
