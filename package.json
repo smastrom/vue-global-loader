@@ -3,12 +3,14 @@
    "private": true,
    "packageManager": "pnpm@8.10.2",
    "engines": {
-      "node": ">=18.0.0"
+      "node": ">=20.0.0"
    },
    "scripts": {
       "dev": "rm -rf dist && concurrently \"pnpm -C packages/vue-global-loader run watch\" \"pnpm -C playground install && pnpm -C playground run dev --host\"",
       "build": "pnpm -C packages/vue-global-loader run build",
       "build:playground": "pnpm build && pnpm -C playground run build",
+      "test": "pnpm build && pnpm -C tests install && pnpm -C tests run test",
+      "test:gui": "concurrently \"pnpm -C packages/vue-global-loader run watch\" \"pnpm -C tests install && pnpm -C tests run test:gui\"",
       "prepare": "husky install"
    },
    "devDependencies": {
