@@ -39,25 +39,27 @@ describe('Scoped Options', () => {
    it('Scoped options are applied to a specific loader and restored on destroy', () => {
       cy.mountApp(App)
 
-         .get('body')
-         .triggerAppEvent('display-loader')
+      cy.triggerAppEvent('display-loader')
 
       cy.getRoot()
          .checkCssVars(customConf)
          .checkComputedStyles(customConf)
-
-         .get('[aria-live]')
-         .should('contain.text', customConf.screenReaderMessage)
+         .within(() => {
+            cy.get('[aria-live]').should('contain.text', customConf.screenReaderMessage)
+         })
 
       cy.triggerAppEvent('destroy-loader')
 
-      cy.triggerAppEvent('display-new-loader')
-
-      cy.getRoot()
-         .checkCssVars(DEF)
-         .checkComputedStyles(DEF)
-
-         .get('[aria-live]')
-         .should('contain.text', DEF.screenReaderMessage)
+      cy.get('[data-cy-loader]')
+         .should('not.exist')
+         .then(() => {
+            cy.triggerAppEvent('display-new-loader')
+            cy.get('[data-cy-loader]')
+               .checkCssVars(DEF)
+               .checkComputedStyles(DEF)
+               .within(() => {
+                  cy.get('[aria-live]').should('contain.text', DEF.screenReaderMessage)
+               })
+         })
    })
 })

@@ -34,10 +34,13 @@ describe('Callbacks', () => {
    it('onDestroyed callback is called', () => {
       cy.mountApp(App)
 
-         .get('body')
-         .triggerAppEvent('display-loader')
-         .triggerAppEvent('destroy-loader')
+      cy.triggerAppEvent('display-loader')
 
-      cy.get('[data-cy-callback]').should('contain.text', destroyedText)
+      cy.getRoot()
+         .should('exist')
+         .then(() => {
+            cy.triggerAppEvent('destroy-loader')
+            cy.get('[data-cy-callback]').should('contain.text', destroyedText)
+         })
    })
 })
