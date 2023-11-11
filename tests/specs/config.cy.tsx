@@ -7,7 +7,7 @@ import {
 } from 'vue-global-loader'
 
 describe('Config', () => {
-   const app = c({
+   const App = c({
       setup() {
          const { displayLoader } = useGlobalLoader()
          onMounted(displayLoader)
@@ -21,7 +21,7 @@ describe('Config', () => {
    })
 
    it('Default config is injected', () => {
-      cy.mountApp(app)
+      cy.mountApp(App)
          .getRoot()
          .checkCssVars(DEF)
          .checkComputedStyles(DEF)
@@ -41,7 +41,7 @@ describe('Config', () => {
          zIndex: 1000,
       }
 
-      cy.mountApp(app, customConf)
+      cy.mountApp(App, customConf)
          .getRoot()
          .checkCssVars(customConf)
          .checkComputedStyles(customConf)
@@ -57,12 +57,55 @@ describe('Config', () => {
          backgroundBlur: 10,
       } as const
 
-      cy.mountApp(app, customConf2)
+      cy.mountApp(App, customConf2)
          .getRoot()
          .checkCssVars({ ...DEF, ...customConf2 })
          .checkComputedStyles({ ...DEF, ...customConf2 })
 
          .get('[aria-live]')
          .should('contain.text', DEF.screenReaderMessage)
+   })
+
+   it('Config can be updated via `updateOptions`', () => {
+      const customConf = {
+         backgroundColor: 'orange',
+         backgroundOpacity: 0.75,
+         backgroundBlur: 5,
+         screenReaderMessage: 'Custom updated message',
+      }
+
+      const App = c({
+         setup() {
+            const { displayLoader, updateOptions } = useGlobalLoader()
+
+            onMounted(() => {
+               window.addEventListener('display-loader', () => displayLoader())
+               window.addEventListener('update-options', () => updateOptions(customConf))
+            })
+
+            return () => (
+               <GlobalLoader data-cy-loader>
+                  <CircleSpinner />
+               </GlobalLoader>
+            )
+         },
+      })
+
+      cy.mountApp(App)
+         .triggerAppEvent('display-loader')
+
+         .getRoot()
+         .checkCssVars(DEF)
+         .checkComputedStyles(DEF)
+         .get('[aria-live]')
+         .should('contain.text', DEF.screenReaderMessage)
+
+         .triggerAppEvent('update-options')
+
+         .getRoot()
+         .checkCssVars({ ...DEF, ...customConf })
+         .checkComputedStyles({ ...DEF, ...customConf })
+         .get('[aria-live]')
+         .should('contain.text', customConf.screenReaderMessage)
    })
 })
