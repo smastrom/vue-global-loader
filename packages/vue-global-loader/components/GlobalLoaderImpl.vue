@@ -1,6 +1,6 @@
 <script>
 import { defineComponent, ref, computed, reactive, nextTick, useCssModule } from 'vue'
-import { useGlobalLoader } from 'vue-global-loader'
+import { useGlobalLoader } from '../dist'
 
 export default defineComponent({
    setup() {
