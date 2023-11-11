@@ -12,7 +12,7 @@ export interface GlobalLoaderOptions {
 }
 
 export interface GlobalLoaderCSSVars extends CSSProperties {
-   '--v-gl-color': string
+   '--v-gl-fg-color': string
    '--v-gl-bg-color': string
    '--v-gl-bg-opacity': number
    '--v-gl-bg-blur': string

@@ -20,7 +20,7 @@ defineComponent({ inheritAttrs: true })
 <style module="m">
 .Wrap {
    width: 160px;
-   fill: var(--v-gl-color);
+   fill: var(--v-gl-fg-color);
 }
 
 .Ring {

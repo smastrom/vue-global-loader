@@ -31,7 +31,7 @@ export default defineComponent({
 
       /** @type {import('vue').ComputedRef<import('vue-global-loader').GlobalLoaderCSSVars>} */
       const style = computed(() => ({
-         '--v-gl-color': options.foregroundColor,
+         '--v-gl-fg-color': options.foregroundColor,
          '--v-gl-bg-color': options.backgroundColor,
          '--v-gl-bg-opacity': options.backgroundOpacity,
          '--v-gl-bg-blur': options.backgroundBlur + 'px',

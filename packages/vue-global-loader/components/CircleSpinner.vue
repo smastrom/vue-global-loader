@@ -13,7 +13,7 @@ defineComponent({ inheritAttrs: true })
 <style module="m">
 .Wrap {
    width: 160px;
-   stroke: var(--v-gl-color);
+   stroke: var(--v-gl-fg-color);
    transform-origin: center;
    animation: KF 2s linear infinite;
 }

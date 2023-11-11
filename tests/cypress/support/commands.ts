@@ -58,7 +58,7 @@ Cypress.Commands.add('checkCssVars', { prevSubject: 'element' }, (subject, confi
       .and('include', '--v-gl-bg-color: ' + config.backgroundColor)
       .and('include', '--v-gl-bg-opacity: ' + config.backgroundOpacity)
       .and('include', '--v-gl-bg-blur: ' + config.backgroundBlur)
-      .and('include', '--v-gl-color: ' + config.foregroundColor)
+      .and('include', '--v-gl-fg-color: ' + config.foregroundColor)
       .and('include', '--v-gl-t-dur: ' + config.transitionDuration)
       .and('include', '--v-gl-z: ' + config.zIndex)
 
