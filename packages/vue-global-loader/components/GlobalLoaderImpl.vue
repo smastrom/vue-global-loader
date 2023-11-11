@@ -181,7 +181,7 @@ export default defineComponent({
    position: absolute;
    inset: 0;
    z-index: -1;
-   background: var(--v-gl-bg-color);
+   background-color: var(--v-gl-bg-color);
    opacity: var(--v-gl-bg-opacity);
 }
 

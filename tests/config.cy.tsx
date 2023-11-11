@@ -24,6 +24,7 @@ describe('Config', () => {
       cy.mountApp(app)
          .getRoot()
          .checkCssVars(DEF)
+         .checkComputedStyles(DEF)
 
          .get('[aria-live]')
          .should('contain.text', DEF.screenReaderMessage)
@@ -43,6 +44,7 @@ describe('Config', () => {
       cy.mountApp(app, customConf)
          .getRoot()
          .checkCssVars(customConf)
+         .checkComputedStyles(customConf)
 
          .get('[aria-live]')
          .should('contain.text', customConf.screenReaderMessage)
@@ -58,6 +60,7 @@ describe('Config', () => {
       cy.mountApp(app, customConf2)
          .getRoot()
          .checkCssVars({ ...DEF, ...customConf2 })
+         .checkComputedStyles({ ...DEF, ...customConf2 })
 
          .get('[aria-live]')
          .should('contain.text', DEF.screenReaderMessage)
