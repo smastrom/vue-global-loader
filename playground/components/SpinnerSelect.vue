@@ -64,6 +64,7 @@ const selectId = 'spinner_select'
       font-weight: 700;
       width: 100%;
       border: none;
+      cursor: pointer;
       background-color: transparent;
       outline: none;
       appearance: none;

@@ -67,12 +67,7 @@ export default defineComponent({
          const { body, documentElement: html } = document
          if (!html || !body || !rootRef.value) return
 
-         body.removeAttribute('aria-hidden')
-
          prev.activeEl = document.activeElement
-
-         invokeEvent(prev.activeEl, 'blur')
-         invokeEvent(rootRef.value, 'focus')
 
          // Better than aria-busy: https://www.tpgi.com/short-note-on-being-busy/
          body.ariaHidden = 'true'
@@ -88,6 +83,9 @@ export default defineComponent({
 
          html.style.overflow = 'hidden'
          body.style.pointerEvents = 'none'
+
+         invokeEvent(prev.activeEl, 'blur')
+         invokeEvent(rootRef.value, 'focus')
       }
 
       function onAfterLeave() {
@@ -143,14 +141,7 @@ export default defineComponent({
          @enterCancelled="onAfterLeave"
          @leaveCancelled="onAfterLeave"
       >
-         <div
-            v-bind="$props.__attrs"
-            :class="m.Bg"
-            v-if="isLoading"
-            :style="style"
-            tabindex="0"
-            role="alert"
-         >
+         <div v-bind="$props.__attrs" :class="m.Bg" v-if="isLoading" :style="style" tabindex="0">
             <slot />
 
             <div :class="m.Bg_Overlay"></div>
@@ -173,6 +164,7 @@ export default defineComponent({
    justify-content: center;
    align-items: center;
    backdrop-filter: blur(var(--v-gl-bg-blur));
+   pointer-events: all;
 }
 
 .Bg_Overlay {
@@ -183,6 +175,7 @@ export default defineComponent({
    z-index: -1;
    background-color: var(--v-gl-bg-color);
    opacity: var(--v-gl-bg-opacity);
+   pointer-events: none;
 }
 
 .SR {

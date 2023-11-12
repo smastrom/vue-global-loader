@@ -50,11 +50,11 @@ describe('Scoped Options', () => {
 
       cy.triggerAppEvent('destroy-loader')
 
-      cy.get('[data-cy-loader]')
+      cy.getRoot()
          .should('not.exist')
          .then(() => {
             cy.triggerAppEvent('display-new-loader')
-            cy.get('[data-cy-loader]')
+            cy.getRoot()
                .checkCssVars(DEF)
                .checkComputedStyles(DEF)
                .within(() => {
