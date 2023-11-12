@@ -14,8 +14,20 @@ defineComponent({ inheritAttrs: true })
 
 <style module="m">
 .Wrap {
-   width: 160px;
+   width: 140px;
    fill: var(--v-gl-fg-color);
+}
+
+@media (max-width: 475px) {
+   .Wrap {
+      width: 110px;
+   }
+}
+
+@media (max-width: 375px) {
+   .Wrap {
+      width: 90px;
+   }
 }
 .Anim_1 {
    animation: KF 1.2s linear infinite;
@@ -33,6 +45,18 @@ defineComponent({ inheritAttrs: true })
    }
    46.875% {
       r: 0.2px;
+   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .Anim_1 {
+      animation: none;
+   }
+   .Anim_2 {
+      animation: none;
+   }
+   .Anim_3 {
+      animation: none;
    }
 }
 </style>

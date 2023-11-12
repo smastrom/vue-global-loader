@@ -14,9 +14,22 @@ defineComponent({ inheritAttrs: true })
 
 <style module="m">
 .Wrap {
-   width: 160px;
+   width: 140px;
    fill: var(--v-gl-fg-color);
 }
+
+@media (max-width: 475px) {
+   .Wrap {
+      width: 110px;
+   }
+}
+
+@media (max-width: 375px) {
+   .Wrap {
+      width: 90px;
+   }
+}
+
 .Anim_1 {
    animation: KF 0.8s linear infinite;
    animation-delay: -0.8s;
@@ -27,6 +40,7 @@ defineComponent({ inheritAttrs: true })
 .Anim_3 {
    animation-delay: -0.5s;
 }
+
 @keyframes KF {
    0% {
       y: 1px;
@@ -36,6 +50,18 @@ defineComponent({ inheritAttrs: true })
       y: 5px;
       height: 14px;
       opacity: 0.2;
+   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .Anim_1 {
+      animation: none;
+   }
+   .Anim_2 {
+      animation: none;
+   }
+   .Anim_3 {
+      animation: none;
    }
 }
 </style>

@@ -20,8 +20,20 @@ defineComponent({ inheritAttrs: true })
 
 <style module="m">
 .Wrap {
-   width: 160px;
+   width: 140px;
    fill: var(--v-gl-fg-color);
+}
+
+@media (max-width: 475px) {
+   .Wrap {
+      width: 110px;
+   }
+}
+
+@media (max-width: 375px) {
+   .Wrap {
+      width: 90px;
+   }
 }
 
 .Anim_1 {
@@ -186,6 +198,36 @@ defineComponent({ inheritAttrs: true })
    25% {
       x: 18.66px;
       y: 18.66px;
+   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .Anim_1 {
+      animation: none;
+   }
+   .Anim_2 {
+      animation: none;
+   }
+   .Anim_3 {
+      animation: none;
+   }
+   .Anim_4 {
+      animation: none;
+   }
+   .Anim_5 {
+      animation: none;
+   }
+   .Anim_6 {
+      animation: none;
+   }
+   .Anim_7 {
+      animation: none;
+   }
+   .Anim_8 {
+      animation: none;
+   }
+   .Anim_9 {
+      animation: none;
    }
 }
 </style>

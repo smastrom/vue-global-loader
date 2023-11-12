@@ -12,11 +12,24 @@ defineComponent({ inheritAttrs: true })
 
 <style module="m">
 .Wrap {
-   width: 160px;
+   width: 140px;
    stroke: var(--v-gl-fg-color);
    transform-origin: center;
    animation: KF 2s linear infinite;
 }
+
+@media (max-width: 475px) {
+   .Wrap {
+      width: 110px;
+   }
+}
+
+@media (max-width: 375px) {
+   .Wrap {
+      width: 90px;
+   }
+}
+
 .Inner {
    stroke-linecap: round;
    animation: KF_Inner 1.5s ease-in-out infinite;
@@ -41,6 +54,15 @@ defineComponent({ inheritAttrs: true })
    100% {
       stroke-dasharray: 42 150;
       stroke-dashoffset: -59;
+   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .Wrap {
+      animation: none;
+   }
+   .Inner {
+      animation: none;
    }
 }
 </style>

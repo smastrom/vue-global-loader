@@ -18,10 +18,22 @@ defineComponent({ inheritAttrs: true })
 
 <style module="m">
 .Wrap {
-   width: 160px;
+   width: 140px;
    fill: var(--v-gl-fg-color);
    transform-origin: center;
    animation: KF 0.75s step-end infinite;
+}
+
+@media (max-width: 475px) {
+   .Wrap {
+      width: 110px;
+   }
+}
+
+@media (max-width: 375px) {
+   .Wrap {
+      width: 90px;
+   }
 }
 
 @keyframes KF {
@@ -60,6 +72,12 @@ defineComponent({ inheritAttrs: true })
    }
    100% {
       transform: rotate(360deg);
+   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .Wrap {
+      animation: none;
    }
 }
 </style>

@@ -12,9 +12,22 @@ defineComponent({ inheritAttrs: true })
 
 <style module="m">
 .Wrap {
-   width: 160px;
+   width: 140px;
    fill: var(--v-gl-fg-color);
 }
+
+@media (max-width: 475px) {
+   .Wrap {
+      width: 110px;
+   }
+}
+
+@media (max-width: 375px) {
+   .Wrap {
+      width: 90px;
+   }
+}
+
 .Inner {
    animation: KF 1.2s cubic-bezier(0.52, 0.6, 0.25, 0.99) infinite;
 }
@@ -27,6 +40,12 @@ defineComponent({ inheritAttrs: true })
    100% {
       r: 11px;
       opacity: 0;
+   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .Inner {
+      animation: none;
    }
 }
 </style>
