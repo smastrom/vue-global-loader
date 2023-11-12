@@ -101,8 +101,10 @@
       color: var(--dark-0);
       text-decoration: none;
 
-      &:hover {
-         text-decoration: underline;
+      @media (hover: hover) {
+         &:hover {
+            text-decoration: underline;
+         }
       }
    }
 }

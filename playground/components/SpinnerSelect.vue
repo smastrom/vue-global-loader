@@ -105,8 +105,10 @@ const selectId = 'spinner_select'
    cursor: pointer;
    transition: background-color 150ms ease-out;
 
-   &:hover {
-      background-color: var(--dark-0);
+   @media (hover: hover) {
+      &:hover {
+         background-color: var(--dark-0);
+      }
    }
 
    & span:first-of-type {

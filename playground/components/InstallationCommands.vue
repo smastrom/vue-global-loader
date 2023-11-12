@@ -72,9 +72,11 @@ function onCopy(text: string) {
          background-color 150ms ease-out,
          color 150ms ease-out;
 
-      &:hover {
-         background-color: var(--dark-1);
-         color: var(--light-1);
+      @media (hover: hover) {
+         &:hover {
+            background-color: var(--dark-1);
+            color: var(--light-1);
+         }
       }
    }
 }
