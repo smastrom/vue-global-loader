@@ -1,10 +1,8 @@
 import { defineComponent, onMounted } from 'vue'
-import {
-   GlobalLoader,
-   CircleSpinner,
-   useGlobalLoader,
-   DEFAULT_OPTIONS as DEF,
-} from 'vue-global-loader'
+import { useGlobalLoader, DEFAULT_OPTIONS as DEF } from 'vue-global-loader'
+
+import GlobalLoader from 'vue-global-loader/GlobalLoader.vue'
+import CircleSpinner from 'vue-global-loader/CircleSpinner.vue'
 
 describe('Scoped Options', () => {
    const customConf = {
@@ -20,12 +18,12 @@ describe('Scoped Options', () => {
    const App = defineComponent({
       setup() {
          const { displayLoader, destroyLoader } = useGlobalLoader(customConf)
-         const { displayLoader: displayNewLoader } = useGlobalLoader()
+         const { displayLoader: displayLoader2 } = useGlobalLoader()
 
          onMounted(() => {
             window.addEventListener('display-loader', () => displayLoader())
             window.addEventListener('destroy-loader', () => destroyLoader())
-            window.addEventListener('display-new-loader', () => displayNewLoader())
+            window.addEventListener('display-loader-2', () => displayLoader2())
          })
 
          return () => (
@@ -50,16 +48,13 @@ describe('Scoped Options', () => {
 
       cy.triggerAppEvent('destroy-loader')
 
+      cy.getRoot().should('not.exist')
+      cy.triggerAppEvent('display-loader-2')
       cy.getRoot()
-         .should('not.exist')
-         .then(() => {
-            cy.triggerAppEvent('display-new-loader')
-            cy.getRoot()
-               .checkCssVars(DEF)
-               .checkComputedStyles(DEF)
-               .within(() => {
-                  cy.get('[aria-live]').should('contain.text', DEF.screenReaderMessage)
-               })
+         .checkCssVars(DEF)
+         .checkComputedStyles(DEF)
+         .within(() => {
+            cy.get('[aria-live]').should('contain.text', DEF.screenReaderMessage)
          })
    })
 })

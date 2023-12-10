@@ -1,6 +1,9 @@
 import { defineComponent as c, onMounted, ref } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
-import { GlobalLoader, CircleSpinner, useGlobalLoader } from 'vue-global-loader'
+import { useGlobalLoader } from 'vue-global-loader'
+
+import GlobalLoader from 'vue-global-loader/GlobalLoader.vue'
+import CircleSpinner from 'vue-global-loader/CircleSpinner.vue'
 
 describe('DOM Mutations', () => {
    const App = c({
@@ -32,26 +35,39 @@ describe('DOM Mutations', () => {
       cy.get('body').siblings('[data-cy-loader]').should('exist')
    })
 
-   it('DOM mutations are toggled properly', () => {
-      cy.mountApp(App)
-
+   function checkDom() {
       for (let i = 0; i < 20; i++) {
          cy.triggerAppEvent('display-loader')
+         cy.getRoot().should('exist')
          cy.checkDomAttrs('displayed')
 
          cy.triggerAppEvent('destroy-loader')
+         cy.getRoot().should('not.exist')
          cy.checkDomAttrs('destroyed')
       }
+   }
+
+   it('DOM mutations are toggled properly', () => {
+      cy.mountApp(App)
+
+      checkDom()
+   })
+
+   it('DOM mutations are toggled properly if transition is disabled', () => {
+      cy.mountApp(App, { transitionDuration: 0 })
+
+      checkDom()
    })
 
    it('DOM mutations are restored if GlobalLoader is removed from the DOM', () => {
       cy.mountApp(App)
 
-         .get('body')
-         .triggerAppEvent('display-loader')
+      cy.triggerAppEvent('display-loader')
+      cy.getRoot().should('exist')
       cy.checkDomAttrs('displayed')
 
       cy.triggerAppEvent('destroy-global-loader')
+      cy.getRoot().should('not.exist')
       cy.checkDomAttrs('destroyed')
    })
 })

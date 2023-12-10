@@ -1,10 +1,12 @@
 import { defineComponent as c, onMounted } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
+import { useGlobalLoader } from 'vue-global-loader'
 
-import { GlobalLoader, CircleSpinner, useGlobalLoader } from 'vue-global-loader'
+import GlobalLoader from 'vue-global-loader/GlobalLoader.vue'
+import CircleSpinner from 'vue-global-loader/CircleSpinner.vue'
 
 describe('Router', () => {
-   const WAIT = 2000
+   const NAVIGATION_DELAY = 2000
 
    const App = c({
       setup() {
@@ -31,7 +33,7 @@ describe('Router', () => {
 
             setTimeout(() => {
                router.push('/about')
-            }, WAIT)
+            }, NAVIGATION_DELAY)
          })
 
          return () => <h1>Home</h1>
@@ -55,19 +57,15 @@ describe('Router', () => {
          { path: '/about', component: About },
       ])
 
-      cy.get('h1')
-         .should('contain.text', 'Home')
-         .get('body')
-         .trigger('display-loader', { force: true })
+      cy.triggerAppEvent('display-loader')
 
-      cy.wait(WAIT)
+      cy.wait(NAVIGATION_DELAY)
 
       cy.get('h1')
          .should('contain.text', 'About')
          .getRoot()
          .should('be.visible')
-         .get('body')
-         .trigger('destroy-loader', { force: true })
+         .triggerAppEvent('destroy-loader')
 
       cy.getRoot().should('not.exist')
    })
