@@ -3,9 +3,14 @@ const { displayLoader, destroyLoader, isLoading, options } = useGlobalLoader()
 
 const { activeSpinner } = useStore()
 
-function onKeyDown(e: KeyboardEvent) {
+async function onKeyDown(e: KeyboardEvent) {
    if (e.key === 'Escape') destroyLoader()
-   if (e.key === 'l') displayLoader()
+   if (e.key === 'l') {
+      const now = Date.now()
+      console.log('displayLoader')
+      await displayLoader()
+      console.log('displayLoader took', Date.now() - now, 'ms')
+   }
 }
 
 onMounted(() => {

@@ -8,7 +8,7 @@ import {
    useCssModule,
    onBeforeUnmount,
 } from 'vue'
-import { useGlobalLoader } from '../dist'
+import { useGlobalLoader } from 'vue-global-loader'
 
 export default defineComponent({
    props: {
@@ -17,7 +17,7 @@ export default defineComponent({
    setup() {
       const m = useCssModule('m')
 
-      const { isLoading, options, __onDestroyed } = useGlobalLoader()
+      const { isLoading, options, __onDisplayed, __onDestroyed } = useGlobalLoader()
 
       /** @type {import('vue').Ref<HTMLElement | null>} */
       const rootRef = ref(null)
@@ -85,7 +85,16 @@ export default defineComponent({
          body.style.pointerEvents = 'none'
 
          invokeEvent(prev.activeEl, 'blur')
+      }
+
+      function onAfterEnter() {
+         __onDisplayed()
          invokeEvent(rootRef.value, 'focus')
+      }
+
+      function onEnterCancelled() {
+         __onDisplayed()
+         onAfterLeave()
       }
 
       function onAfterLeave() {
@@ -126,6 +135,8 @@ export default defineComponent({
          style,
          onEnter,
          onAfterLeave,
+         onAfterEnter,
+         onEnterCancelled,
       }
    },
 })
@@ -137,14 +148,15 @@ export default defineComponent({
          ref="rootRef"
          v-bind="transitionStyles"
          @enter="onEnter"
+         @afterEnter="onAfterEnter"
          @afterLeave="onAfterLeave"
-         @enterCancelled="onAfterLeave"
+         @enterCancelled="onEnterCancelled"
          @leaveCancelled="onAfterLeave"
       >
          <div v-bind="$props.__attrs" :class="m.Bg" v-if="isLoading" :style="style" tabindex="0">
             <slot />
 
-            <div :class="m.Bg_Overlay"></div>
+            <div :class="m.Bg_Overlay" />
             <div :class="m.SR" aria-live="assertive" role="alert">
                {{ options.screenReaderMessage }}
             </div>

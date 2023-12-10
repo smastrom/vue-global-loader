@@ -1,6 +1,6 @@
 import type { GlobalLoaderOptions } from './types'
 
-import { reactive, readonly, ref, inject, type InjectionKey, nextTick } from 'vue'
+import { reactive, readonly, ref, inject, type InjectionKey } from 'vue'
 import { DEFAULT_OPTIONS } from './constants'
 import { isSSR, noop } from './utils'
 
@@ -12,7 +12,8 @@ export class GlobalLoaderStore {
    prevOptions: GlobalLoaderOptions = { ...DEFAULT_OPTIONS }
    isLoading = ref(false)
 
-   __onDestroyedCb = noop
+   onDestroyedCb = noop
+   onDisplayedResolve = noop
 
    constructor(pluginConfig: Partial<GlobalLoaderOptions>) {
       this.options = reactive(Object.assign({ ...DEFAULT_OPTIONS }, pluginConfig))
@@ -31,16 +32,21 @@ export class GlobalLoaderStore {
    }
 
    displayLoader(scopedOptions: Partial<GlobalLoaderOptions> = {}) {
-      if (this.isLoading.value) return
+      return new Promise<void>((resolve) => {
+         if (this.isLoading.value) {
+            resolve()
+            return
+         }
 
-      this.setPrevOptions(this.options)
-      console.log('[global-loader] - Saved global options (prev)!')
+         this.setPrevOptions(this.options)
+         console.log('[global-loader] - Saved global options (prev)!')
 
-      this.setOptions(scopedOptions)
-      console.log('[global-loader] - Set scoped options!')
+         this.setOptions(scopedOptions)
+         console.log('[global-loader] - Set scoped options!')
 
-      nextTick(() => {
          this.setIsLoading(true)
+
+         this.onDisplayedResolve = resolve
       })
    }
 
@@ -49,15 +55,13 @@ export class GlobalLoaderStore {
 
       console.log('[global-loader] - Destroying loader...')
 
-      this.__onDestroyedCb = typeof extOnDestroyed === 'function' ? extOnDestroyed : noop
+      this.onDestroyedCb = typeof extOnDestroyed === 'function' ? extOnDestroyed : noop
 
-      nextTick(() => {
-         this.setIsLoading(false)
-      })
+      this.setIsLoading(false)
    }
 
    onDestroyed() {
-      this.__onDestroyedCb()
+      this.onDestroyedCb()
       this.setOptions(this.prevOptions)
 
       console.log('[global-loader] - Loader destroyed, options restored!')
@@ -67,10 +71,11 @@ export class GlobalLoaderStore {
 export function useGlobalLoader(scopedOptions: Partial<GlobalLoaderOptions> = {}) {
    if (isSSR) {
       return {
-         displayLoader: noop,
+         displayLoader: () => Promise.resolve(),
          destroyLoader: noop,
          updateOptions: noop,
          __onDestroyed: noop,
+         __onDisplayed: noop,
          options: readonly(DEFAULT_OPTIONS),
          isLoading: readonly(ref(false)),
       }
@@ -87,6 +92,8 @@ export function useGlobalLoader(scopedOptions: Partial<GlobalLoaderOptions> = {}
       updateOptions: (options: Partial<GlobalLoaderOptions>) => store.setOptions(options),
       /** @internal This method is used internally by the plugin and should not be used by the user. */
       __onDestroyed: () => store.onDestroyed(),
+      /** @internal This method is used internally by the plugin and should not be used by the user. */
+      __onDisplayed: () => store.onDisplayedResolve(),
       /** Reactive read-only global loader options. */
       options: readonly(store.options),
       /** Reactive read-only global loader current state. */
