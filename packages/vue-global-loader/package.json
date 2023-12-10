@@ -1,9 +1,19 @@
 {
    "name": "vue-global-loader",
-   "version": "0.9.0",
+   "version": "0.9.6",
    "private": false,
    "description": "Global loaders made easy for Vue and Nuxt",
-   "keywords": [],
+   "keywords": [
+      "vue",
+      "vuejs",
+      "nuxt",
+      "nuxtjs",
+      "loading",
+      "loading-screen",
+      "loader",
+      "spinner",
+      "spinners"
+   ],
    "homepage": "https://vue-global-loader.pages.dev/",
    "bugs": {
       "url": "https://github.com/smastrom/vue-global-loader/issues"
