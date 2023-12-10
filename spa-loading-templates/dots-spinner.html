@@ -1,0 +1,68 @@
+<div class="SPA_Bg" id="spa_loading_template">
+   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="SPA_Svg">
+      <circle class="SPA_Anim_1" cx="4" cy="12" r="3" />
+      <circle class="SPA_Anim_1 SPA_Anim_2" cx="12" cy="12" r="3" />
+      <circle class="SPA_Anim_1 SPA_Anim_3" cx="20" cy="12" r="3" />
+   </svg>
+
+   <style>
+      .SPA_Bg {
+         inset: 0;
+         position: fixed;
+         height: 100vh;
+         height: 100svh;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         background-color: var(--v-gl-bg-color, #fff);
+         z-index: 2147483647;
+      }
+
+      .SPA_Svg {
+         width: 140px;
+         fill: var(--v-gl-fg-color, #000);
+      }
+
+      @media (max-width: 475px) {
+         .SPA_Svg {
+            width: 110px;
+         }
+      }
+
+      @media (max-width: 375px) {
+         .SPA_Svg {
+            width: 90px;
+         }
+      }
+
+      .SPA_Anim_1 {
+         animation: SPA_KF 1.2s linear infinite;
+      }
+
+      .SPA_Anim_2 {
+         animation-delay: -0.65s;
+      }
+
+      .SPA_Anim_3 {
+         animation-delay: -0.5s;
+      }
+
+      @keyframes SPA_KF {
+         93.75%,
+         100% {
+            r: 3px;
+         }
+         46.875% {
+            r: 0.2px;
+         }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+         .SPA_Anim_1,
+         .SPA_Anim_2,
+         .SPA_Anim_3 {
+            animation: none;
+         }
+      }
+   </style>
+</div>

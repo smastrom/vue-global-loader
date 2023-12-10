@@ -1,0 +1,71 @@
+<div class="SPA_Bg" id="spa_loading_template">
+   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="SPA_Svg">
+      <rect class="SPA_Anim_1" x="1" y="1" width="6" height="22" />
+      <rect class="SPA_Anim_1 SPA_Anim_2" x="9" y="1" width="6" height="22" />
+      <rect class="SPA_Anim_1 SPA_Anim_3" x="17" y="1" width="6" height="22" />
+   </svg>
+
+   <style>
+      .SPA_Bg {
+         inset: 0;
+         position: fixed;
+         height: 100vh;
+         height: 100svh;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         background-color: var(--v-gl-bg-color, #fff);
+         z-index: 2147483647;
+      }
+
+      .SPA_Svg {
+         width: 140px;
+         fill: var(--v-gl-fg-color, #000);
+      }
+
+      @media (max-width: 475px) {
+         .SPA_Svg {
+            width: 110px;
+         }
+      }
+
+      @media (max-width: 375px) {
+         .SPA_Svg {
+            width: 90px;
+         }
+      }
+
+      .SPA_Anim_1 {
+         animation: SPA_KF 0.8s linear infinite;
+         animation-delay: -0.8s;
+      }
+
+      .SPA_Anim_2 {
+         animation-delay: -0.65s;
+      }
+
+      .SPA_Anim_3 {
+         animation-delay: -0.5s;
+      }
+
+      @keyframes SPA_KF {
+         0% {
+            y: 1px;
+            height: 22px;
+         }
+         93.75% {
+            y: 5px;
+            height: 14px;
+            opacity: 0.2;
+         }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+         .SPA_Anim_1,
+         .SPA_Anim_2,
+         .SPA_Anim_3 {
+            animation: none;
+         }
+      }
+   </style>
+</div>

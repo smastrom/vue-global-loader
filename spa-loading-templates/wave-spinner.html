@@ -1,0 +1,223 @@
+<div class="SPA_Bg" id="spa_loading_template">
+   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="SPA_Svg">
+      <rect class="SPA_Anim_1" x="1" y="1" width="7.33" height="7.33" />
+      <rect class="SPA_Anim_2" x="8.33" y="1" width="7.33" height="7.33" />
+      <rect class="SPA_Anim_3" x="1" y="8.33" width="7.33" height="7.33" />
+      <rect class="SPA_Anim_4" x="15.66" y="1" width="7.33" height="7.33" />
+      <rect class="SPA_Anim_5" x="8.33" y="8.33" width="7.33" height="7.33" />
+      <rect class="SPA_Anim_6" x="1" y="15.66" width="7.33" height="7.33" />
+      <rect class="SPA_Anim_7" x="15.66" y="8.33" width="7.33" height="7.33" />
+      <rect class="SPA_Anim_8" x="8.33" y="15.66" width="7.33" height="7.33" />
+      <rect class="SPA_Anim_9" x="15.66" y="15.66" width="7.33" height="7.33" />
+   </svg>
+
+   <style>
+      .SPA_Bg {
+         inset: 0;
+         position: fixed;
+         height: 100vh;
+         height: 100svh;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         background-color: var(--v-gl-bg-color, #fff);
+         z-index: 2147483647;
+      }
+
+      .SPA_Svg {
+         width: 140px;
+         fill: var(--v-gl-fg-color, #000);
+      }
+
+      @media (max-width: 475px) {
+         .SPA_Svg {
+            width: 110px;
+         }
+      }
+
+      @media (max-width: 375px) {
+         .SPA_Svg {
+            width: 90px;
+         }
+      }
+
+      .SPA_Anim_1 {
+         animation:
+            SPA_KF_Root 1.2s linear infinite,
+            SPA_KF_1 1.2s linear infinite;
+      }
+      .SPA_Anim_2 {
+         animation:
+            SPA_KF_Root 1.2s linear infinite,
+            SPA_KF_2 1.2s linear infinite;
+         animation-delay: 0.1s;
+      }
+      .SPA_Anim_3 {
+         animation:
+            SPA_KF_Root 1.2s linear infinite,
+            SPA_KF_3 1.2s linear infinite;
+         animation-delay: 0.1s;
+      }
+      .SPA_Anim_4 {
+         animation:
+            SPA_KF_Root 1.2s linear infinite,
+            SPA_KF_4 1.2s linear infinite;
+         animation-delay: 0.2s;
+      }
+      .SPA_Anim_5 {
+         animation:
+            SPA_KF_Root 1.2s linear infinite,
+            SPA_KF_5 1.2s linear infinite;
+         animation-delay: 0.2s;
+      }
+      .SPA_Anim_6 {
+         animation:
+            SPA_KF_Root 1.2s linear infinite,
+            SPA_KF_6 1.2s linear infinite;
+         animation-delay: 0.2s;
+      }
+
+      .SPA_Anim_7 {
+         animation:
+            SPA_KF_Root 1.2s linear infinite,
+            SPA_KF_7 1.2s linear infinite;
+         animation-delay: 0.3s;
+      }
+      .SPA_Anim_8 {
+         animation:
+            SPA_KF_Root 1.2s linear infinite,
+            SPA_KF_8 1.2s linear infinite;
+         animation-delay: 0.3s;
+      }
+      .SPA_Anim_9 {
+         animation:
+            SPA_KF_Root 1.2s linear infinite,
+            SPA_KF_9 1.2s linear infinite;
+         animation-delay: 0.4s;
+      }
+      @keyframes SPA_KF_Root {
+         0%,
+         50% {
+            width: 7.33px;
+            height: 7.33px;
+         }
+         25% {
+            width: 1.33px;
+            height: 1.33px;
+         }
+      }
+
+      @keyframes SPA_KF_1 {
+         0%,
+         50% {
+            x: 1px;
+            y: 1px;
+         }
+         25% {
+            x: 4px;
+            y: 4px;
+         }
+      }
+      @keyframes SPA_KF_2 {
+         0%,
+         50% {
+            x: 8.33px;
+            y: 1px;
+         }
+         25% {
+            x: 11.33px;
+            y: 4px;
+         }
+      }
+      @keyframes SPA_KF_3 {
+         0%,
+         50% {
+            x: 1px;
+            y: 8.33px;
+         }
+         25% {
+            x: 4px;
+            y: 11.33px;
+         }
+      }
+      @keyframes SPA_KF_4 {
+         0%,
+         50% {
+            x: 15.66px;
+            y: 1px;
+         }
+         25% {
+            x: 18.66px;
+            y: 4px;
+         }
+      }
+      @keyframes SPA_KF_5 {
+         0%,
+         50% {
+            x: 8.33px;
+            y: 8.33px;
+         }
+         25% {
+            x: 11.33px;
+            y: 11.33px;
+         }
+      }
+      @keyframes SPA_KF_6 {
+         0%,
+         50% {
+            x: 1px;
+            y: 15.66px;
+         }
+         25% {
+            x: 4px;
+            y: 18.66px;
+         }
+      }
+      @keyframes SPA_KF_7 {
+         0%,
+         50% {
+            x: 15.66px;
+            y: 8.33px;
+         }
+         25% {
+            x: 18.66px;
+            y: 11.33px;
+         }
+      }
+      @keyframes SPA_KF_8 {
+         0%,
+         50% {
+            x: 8.33px;
+            y: 15.66px;
+         }
+         25% {
+            x: 11.33px;
+            y: 18.66px;
+         }
+      }
+      @keyframes SPA_KF_9 {
+         0%,
+         50% {
+            x: 15.66px;
+            y: 15.66px;
+         }
+         25% {
+            x: 18.66px;
+            y: 18.66px;
+         }
+      }
+      @media (prefers-reduced-motion: reduce) {
+         .SPA_Anim_1,
+         .SPA_Anim_2,
+         .SPA_Anim_3,
+         .SPA_Anim_4,
+         .SPA_Anim_5,
+         .SPA_Anim_6,
+         .SPA_Anim_7,
+         .SPA_Anim_8,
+         .SPA_Anim_9 {
+            animation: none;
+         }
+      }
+   </style>
+</div>

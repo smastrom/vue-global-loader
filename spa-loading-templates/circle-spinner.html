@@ -1,0 +1,74 @@
+<div class="SPA_Bg" id="spa_loading_template">
+   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="SPA_Svg">
+      <circle class="SPA_Inner" cx="12" cy="12" r="9.5" fill="none" stroke-width="3" />
+   </svg>
+
+   <style>
+      .SPA_Bg {
+         inset: 0;
+         position: fixed;
+         height: 100vh;
+         height: 100svh;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         background-color: var(--v-gl-bg-color, #fff);
+         z-index: 2147483647;
+      }
+
+      .SPA_Svg {
+         width: 140px;
+         stroke: var(--v-gl-fg-color, #000);
+         transform-origin: center;
+         animation: SPA_KF 2s linear infinite;
+      }
+
+      @media (max-width: 475px) {
+         .SPA_Svg {
+            width: 110px;
+         }
+      }
+
+      @media (max-width: 375px) {
+         .SPA_Svg {
+            width: 90px;
+         }
+      }
+
+      .SPA_Inner {
+         stroke-linecap: round;
+         animation: SPA_KF_Inner 1.5s ease-in-out infinite;
+      }
+
+      @keyframes SPA_KF {
+         100% {
+            transform: rotate(360deg);
+         }
+      }
+
+      @keyframes SPA_KF_Inner {
+         0% {
+            stroke-dasharray: 0 150;
+            stroke-dashoffset: 0;
+         }
+         47.5% {
+            stroke-dasharray: 42 150;
+            stroke-dashoffset: -16;
+         }
+         95%,
+         100% {
+            stroke-dasharray: 42 150;
+            stroke-dashoffset: -59;
+         }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+         .SPA_Svg {
+            animation: none;
+         }
+         .SPA_Inner {
+            animation: none;
+         }
+      }
+   </style>
+</div>

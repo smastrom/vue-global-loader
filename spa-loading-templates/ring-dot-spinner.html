@@ -1,0 +1,57 @@
+<div class="SPA_Bg" id="spa_loading_template">
+   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="SPA_Svg">
+      <path
+         d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
+         opacity=".25"
+      />
+      <circle class="SPA_Inner" cx="12" cy="2.5" r="1.5" />
+   </svg>
+
+   <style>
+      .SPA_Bg {
+         inset: 0;
+         position: fixed;
+         height: 100vh;
+         height: 100svh;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         background-color: var(--v-gl-bg-color, #fff);
+         z-index: 2147483647;
+      }
+
+      .SPA_Svg {
+         width: 140px;
+         fill: var(--v-gl-fg-color, #000);
+      }
+
+      @media (max-width: 475px) {
+         .SPA_Svg {
+            width: 110px;
+         }
+      }
+
+      @media (max-width: 375px) {
+         .SPA_Svg {
+            width: 90px;
+         }
+      }
+
+      .SPA_Inner {
+         transform-origin: center;
+         animation: SPA_KF 0.75s linear infinite;
+      }
+
+      @keyframes SPA_KF {
+         100% {
+            transform: rotate(360deg);
+         }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+         .SPA_Inner {
+            animation: none;
+         }
+      }
+   </style>
+</div>
