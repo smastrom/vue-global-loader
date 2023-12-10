@@ -1,8 +1,14 @@
 # Vue Global Loader
 
+![npm](https://img.shields.io/npm/v/vue-global-loader?color=46c119) ![dependencies](https://img.shields.io/badge/dependencies-0-success) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/vue-global-loader?color=success) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/smastrom/vue-global-loader/tests.yml?branch=main&label=tests)
+
 ### Global loaders made easy for Vue and Nuxt.
 
 [Live Demo](https://vue-global-loader.pages.dev/) — [Vite Example](https://stackblitz.com/edit/vitejs-vite-umqonc?file=src%2FApp.vue) — [Nuxt Example](https://stackblitz.com/edit/nuxt-starter-rpnobz?file=app.vue)
+
+<br />
+
+> :bulb: Please note that this package only works with [Vite](https://vitejs.dev/) and [Nuxt](https://nuxt.com/) setups. Usage without a build-step is not supported. Testing against legacy bundlers (Vue CLI, Webpack) has not been performed.
 
 <br />
 
@@ -14,7 +20,7 @@ I find it useful to display global loaders in single-page apps. For example:
 - When navigating to an internal page after a critical operation such as sign-in/sign-out
 - When navigating to an internal page with plenty of data
 
-Since I was creating and re-creating the same logic and markup over and over again, I decided to publish a package for it.
+Since I was re-creating the same logic and markup over and over again, I decided to publish a package for it.
 
 ## Features
 
@@ -24,7 +30,24 @@ This package simplifies the usage of a single, top-level global loader by:
 - Providing a practical API customizable via few key props (get started in 10 seconds)
 - Properly disable user interactions with the rest of the app while the loader is displayed
 - Announcing a screen reader message when the loader is displayed
-- Dynamically update global options from anywhere in the Vue app and set scoped options for the current loader
+- Dynamically update options from anywhere in the app and set options scoped to the current loader
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Customization](#customization)
+  - [Spinners](#spinners)
+  - [Options](#options)
+    - [Default Options](#default-options)
+    - [Scoped Options](#scoped-options)
+    - [Updating default options](#updating-default-options)
+  - [Callbacks / Lifecycle](#callbacks--lifecycle)
+- [API](#api)
+- [Further Notes](#further-notes)
+  - [When to use it](#when-to-use-it)
+  - [When to not use it](#when-to-not-use-it)
+- [SPA Loading Templates](#spa-loading-templates)
 
 ## Installation
 
@@ -42,9 +65,9 @@ npm i vue-global-loader
 
 ## Usage
 
-> :bulb: No need to state the imports if using **Nuxt**.
+### Getting Started
 
-**1. main.js (Single-page app with Vite, Webpack, etc)**
+**1. Vite - main.js**
 
 ```js
 import { createApp } from 'vue'
@@ -54,14 +77,12 @@ import App from './App.vue'
 
 const app = createApp(App)
 
-app.use(globalLoader)
-
-// other app.use() calls...
+app.use(globalLoader) // <- Place it at the BEGINNING of the app.use() chain
 
 app.mount('#app')
 ```
 
-**1. or nuxt.config.ts (if using Nuxt)**
+**1. or Nuxt - nuxt.config.ts**
 
 ```ts
 export default defineNuxtConfig({
@@ -71,92 +92,84 @@ export default defineNuxtConfig({
 
 **2. App.vue (Vite) / app.vue (Nuxt)**
 
-> :bulb: No need to state the imports if using **Nuxt**.
+> :bulb: No need to state the imports if using **Nuxt** (everything is auto-imported)
 
 ```vue
 <script setup>
-import { GlobalLoader, RingSpinner } from 'vue-global-loader'
+import GlobalLoader from 'vue-global-loader/GlobalLoader.vue'
+import CircleSpinner from 'vue-global-loader/CircleSpinner.vue'
 </script>
 
 <template>
   <GlobalLoader>
-    <RingSpinner />
+    <CircleSpinner />
   </GlobalLoader>
 
   <!-- RouterView, NuxtLayout, NuxtPage... -->
 </template>
 ```
 
-**Component.vue**
+### Usage
+
+`pages/login.vue`
 
 ```vue
 <script setup>
+import { useRouter } from 'vue-router'
 import { useGlobalLoader } from 'vue-global-loader'
 
 const { displayLoader, destroyLoader, isLoading } = useGlobalLoader({
-  screenReaderMessage: 'Redirecting to payment page, please wait...'
+  screenReaderMessage:
+    'Signing-in, you will be redirected to the dashboard, please wait...'
 })
 
-async function createCheckout() {
+const router = useRouter()
+
+async function signIn() {
   try {
-    displayLoader()
-    const { checkoutUrl } = await fetch('/api/create-checkout').then((res) =>
-      res.json()
-    )
-    window.location.href = checkoutUrl
-    // No need to call destroyLoader() on success, state is lost when leaving the page
+    displayLoader() // Display loader...
+    await auth.signIn()
+    router.push('/dashboard')
   } catch (err) {
     console.error(err)
-    destroyLoader(() => {
-      // Logged when the loader is removed from the DOM
-      console.log('Loader destroyed')
-    })
+    destroyLoader()
   }
 }
 </script>
 
 <template>
-  <button :disabled="isLoading" @click="createCheckout">Go to Payment</button>
+  <button :disabled="isLoading" @click="signIn">Sign-in</button>
 </template>
 ```
 
-<details><summary><strong>Options API</strong></summary>
+`pages/dashboard.vue`
 
 ```vue
-<script>
+<script setup>
+import { ref, onMounted } from 'vue'
 import { useGlobalLoader } from 'vue-global-loader'
 
-export default {
-  setup() {
-    const { displayLoader, destroyLoader, isLoading } = useGlobalLoader({
-      screenReaderMessage: 'Redirecting to payment page, please wait...'
-    })
+const { destroyLoader } = useGlobalLoader()
 
-    return { displayLoader, destroyLoader, isLoading }
-  },
-  methods: {
-    async createCheckout() {
-      try {
-        this.displayLoader()
-        const { checkoutUrl } = await fetch('/api/create-checkout').then(
-          (res) => res.json()
-        )
-        window.location.href = checkoutUrl
-      } catch (err) {
-        console.error(err)
-        this.destroyLoader()
-      }
-    }
+const data = ref(null)
+
+onMounted(async () => {
+  try {
+    data.value = await fetchDashboardData()
+    destroyLoader() // ...destroy loader, UI is ready
+  } catch (err) {
+    console.error(err)
+    // Handle error
   }
-}
+})
 </script>
 
 <template>
-  <button :disabled="isLoading" @click="createCheckout">Go to Payment</button>
+  <div v-if="data">
+    <!-- ... -->
+  </div>
 </template>
 ```
-
-</details>
 
 ## Customization
 
@@ -164,24 +177,25 @@ export default {
 
 This package ships with 8 spinners that should cover most use cases:
 
-|                                                     | Import                                                |
-| --------------------------------------------------- | ----------------------------------------------------- |
-| ![spinner](https://svgur.com/i/zKJ.svg)             | `import { Spinner } from 'vue-global-loader'`         |
-| ![ring-spinner](https://svgur.com/i/zJk.svg)        | `import { RingSpinner } from 'vue-global-loader'`     |
-| ![ring-dot-spinner](https://svgur.com/i/zKc.svg)    | `import { RingDotSpinner } from 'vue-global-loader'`  |
-| ![circle-bars-spinner](https://svgur.com/i/zHt.svg) | `import { RingBarsSpinner } from 'vue-global-loader'` |
-| ![pulse-spinner](https://svgur.com/i/zKK.svg)       | `import { PulseSpinner } from 'vue-global-loader'`    |
-| ![dots-spinner](https://svgur.com/i/zKf.svg)        | `import { DotsSpinner } from 'vue-global-loader'`     |
-| ![bars-spinner](https://svgur.com/i/zHu.svg)        | `import { BarsSpinner } from 'vue-global-loader'`     |
-| ![wave-spinner](https://svgur.com/i/zJ6.svg)        | `import { WaveSpinner } from 'vue-global-loader'`     |
+|                                                     | Import                                                                |
+| --------------------------------------------------- | --------------------------------------------------------------------- |
+| ![spinner](https://svgur.com/i/zKJ.svg)             | `import CircleSpinner from 'vue-global-loader/CircleSpinner.vue'`     |
+| ![ring-spinner](https://svgur.com/i/zJk.svg)        | `import RingSpinner from 'vue-global-loader/RingSpinner.vue'`         |
+| ![ring-dot-spinner](https://svgur.com/i/zKc.svg)    | `import RingDotSpinner from 'vue-global-loader/RingDotSpinner.vue'`   |
+| ![circle-bars-spinner](https://svgur.com/i/zHt.svg) | `import RingBarsSpinner from 'vue-global-loader/RingBarsSpinner.vue'` |
+| ![pulse-spinner](https://svgur.com/i/zKK.svg)       | `import PulseSpinner from 'vue-global-loader/PulseSpinner.vue'`       |
+| ![dots-spinner](https://svgur.com/i/zKf.svg)        | `import DotsSpinner from 'vue-global-loader/DotsSpinner.vue'`         |
+| ![bars-spinner](https://svgur.com/i/zHu.svg)        | `import BarsSpinner from 'vue-global-loader/BarsSpinner.vue'`         |
+| ![wave-spinner](https://svgur.com/i/zJ6.svg)        | `import WaveSpinner from 'vue-global-loader/WaveSpinner.vue'`         |
 
 Import the one you prefer and pass it to the default slot:
 
-> :bulb: No need to state the imports if using Nuxt.
+> :bulb: No need to state the imports if using **Nuxt** (everything is auto-imported)
 
 ```vue
 <script setup>
-import { GlobalLoader, PulseSpinner } from 'vue-global-loader'
+import GlobalLoader from 'vue-global-loader/GlobalLoader.vue'
+import PulseSpinner from 'vue-global-loader/PulseSpinner.vue'
 </script>
 
 <template>
@@ -193,9 +207,9 @@ import { GlobalLoader, PulseSpinner } from 'vue-global-loader'
 </template>
 ```
 
-There's no need to style the spinners (e.g. the spinner should be 300px wide on desktop, 160px wide on low-res mobile devices, etc). This is already taken care for you.
+There's no need to style the spinners (e.g. the spinner should be 140px wide on desktop, 110px wide on mobile devices, animations should be disabled if users prefer reduced motion, etc). This is already taken care for you.
 
-Each spinner already has its own CSS and inherits the `foreground` option specified in your config. You can append a class to override its styles, but it's not recommended and it's better to use a custom spinner.
+Each spinner already has its own CSS and inherits the `foregroundColor` option specified in your config. You can append a class to override its styles, but it's not recommended and it's better to use a custom spinner.
 
 #### Custom Spinners
 
@@ -218,7 +232,7 @@ To use your own spinner, pass a custom SVG (or whatever) to the default slot:
 
 <style>
 .MySpinner {
-  fill: var(--v-gl-fg-color); /* Value of the 'foreground' prop */
+  fill: var(--v-gl-fg-color); /* Value of the 'foregroundColor' prop */
   width: 100px;
   height: 100px;
 
@@ -235,14 +249,14 @@ To use your own spinner, pass a custom SVG (or whatever) to the default slot:
 | Prop                  | Type     | Description                                                        | Default      |
 | --------------------- | -------- | ------------------------------------------------------------------ | ------------ |
 | `screenReaderMessage` | `string` | Message to announce when displaying the loader.                    | `Loading`    |
-| `transitionDuration`  | `number` | Enter/leave fade transition duration in ms. Set `0` to disable it. | `300`        |
+| `transitionDuration`  | `number` | Enter/leave fade transition duration in ms. Set `0` to disable it. | `250`        |
 | `foregroundColor`     | `string` | Color of the spinner.                                              | `#000`       |
 | `backgroundColor`     | `string` | Background color of the loading screen.                            | `#fff`       |
 | `backgroundOpacity`   | `number` | Background opacity of the loading screen.                          | `1`          |
 | `backgroundBlur`      | `number` | Background blur of the loading screen.                             | `0`          |
 | `zIndex`              | `number` | Z-index of the loading screen.                                     | `2147483647` |
 
-#### Plugin Options (Default
+#### Default Options
 
 To customize defaults, pass the options to the `globalLoader` plugin (if using Vite):
 
@@ -286,6 +300,8 @@ const { displayLoader, destroyLoader } = useGlobalLoader({
 
 For convenience, you can set new defaults from anywhere in your Vue app using `updateOptions`:
 
+> :bulb: No need to state the imports if using **Nuxt** (everything is auto-imported)
+
 ```vue
 <script setup>
 import { watch } from 'vue'
@@ -310,6 +326,35 @@ watch(
 </script>
 ```
 
+### Callbacks / Transitions Lifecycle
+
+The `GlobalLoader` lifecycle is handled using Vue's [Transition](https://vuejs.org/guide/built-ins/transition.html) hooks. For convenience, `displayLoader` and `destroyLoader` include some syntactic sugar to make it easier to execute code after the fade transition is completed.
+
+#### `displayLoader`
+
+This function returns a promise that resolves after the enter transition is completed or cancelled.
+
+```ts
+const { displayLoader } = useGlobalLoader()
+const router = useRouter()
+
+await displayLoader() // Wait for the fade transition to complete...
+await signOut() // ...mutate the underlying UI
+router.push('/') // ...navigate to the homepage and call 'destroyLoader' there
+```
+
+#### `destroyLoader`
+
+This function doesn't return a promise but instead, it accepts a callback that is executed after the loader is destroyed.
+
+```ts
+const { destroyLoader } = useGlobalLoader()
+
+destroyLoader(() => {
+  console.log('Loader destroyed')
+})
+```
+
 ## API
 
 ```ts
@@ -326,7 +371,7 @@ interface GlobalLoaderOptions {
 declare function useGlobalLoader(
   scopedOptions?: Partial<GlobalLoaderOptions>
 ): {
-  displayLoader: () => void
+  displayLoader: () => Promise<void>
   destroyLoader: (onDestroyed?: () => void) => void
   updateOptions: (newOptions: Partial<GlobalLoaderOptions>) => void
   options: Readonly<Reactive<GlobalLoaderOptions>>
@@ -342,12 +387,24 @@ Use it when you think it's better for the user to not interact with the rest of 
 
 ### When to not use it
 
+- To display a loader while your app JS is loading. Use the [SPA Loading Templates](#spa-loading-templates) in plain HTML for that (see below).
 - Server-side rendered pages: they are already meant to send the proper content to the client and avoid spinners.
 - Non-critical async operations that are quick and obvious, in such case a local loader is better (e.g. spinner in the newsletter form submit button).
 - Async operations meant to feed the content of small sub-components, in such case [Suspense](https://vuejs.org/guide/built-ins/suspense.html) is the way to go.
-- To display a loader while your app JS is loading. In this case:
-  - **Vite SPA** - Add the loader markup directly to the `index.html` file (e.g. `<div id="spa-loader">`) and remove it in a top-level (App.vue) _onMounted_ hook via `document.getElementById('spa-loader').remove()`.
-  - **Nuxt** - Use the built-in [SPA loading indicator](https://nuxt.com/blog/v3-6#spa-loading-indicator).
+
+## SPA Loading Templates
+
+For convenience, ready-made HTML templates for each spinner shipped with this package are available in [this folder](https://github.com/smastrom/vue-global-loader/tree/main/spa-loading-templates).
+
+They can be used to display a global loader that has the same appearance of the one used in your app to be displayed while the app JS is loading.
+
+### Vite SPA
+
+Paste the markup as a direct child of the `body` in the `index.html` file and remove it in a top-level (App.vue) _onMounted_ hook via `document.getElementById('spa_loading_template').remove()`.
+
+### Nuxt
+
+Download the desired html file, rename it and place it in `@/app/spa-loading-template.html`.
 
 ## Thanks
 
@@ -355,4 +412,4 @@ Use it when you think it's better for the user to not interact with the rest of 
 
 ## License
 
-MIT Licensed - Simone Mastromattei © 2023
+MIT
