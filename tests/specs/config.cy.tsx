@@ -1,10 +1,8 @@
 import { defineComponent as c, onMounted } from 'vue'
-import {
-   GlobalLoader,
-   CircleSpinner,
-   useGlobalLoader,
-   DEFAULT_OPTIONS as DEF,
-} from 'vue-global-loader'
+import { useGlobalLoader, DEFAULT_OPTIONS as DEF } from 'vue-global-loader'
+
+import GlobalLoader from 'vue-global-loader/GlobalLoader.vue'
+import CircleSpinner from 'vue-global-loader/CircleSpinner.vue'
 
 describe('Config', () => {
    const App = c({
