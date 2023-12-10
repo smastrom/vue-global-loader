@@ -1,5 +1,5 @@
 {
-   "name": "nuxt-app",
+   "name": "vue-global-loader-playground",
    "private": true,
    "type": "module",
    "scripts": {

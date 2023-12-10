@@ -1,5 +1,5 @@
 {
-   "name": "vue-global-loader",
+   "name": "vue-global-loader-monorepo",
    "private": true,
    "packageManager": "pnpm@8.10.2",
    "engines": {
@@ -16,7 +16,7 @@
    "devDependencies": {
       "concurrently": "^8.2.2",
       "husky": "^8.0.3",
-      "lint-staged": "^15.0.2",
+      "lint-staged": "^15.1.0",
       "prettier": "^3.0.3",
       "prettier-plugin-jsdoc": "^1.1.1"
    },

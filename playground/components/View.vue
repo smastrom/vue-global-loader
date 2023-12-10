@@ -99,11 +99,11 @@
 
    & a {
       color: var(--dark-0);
-      text-decoration: none;
+      text-decoration: underline;
 
       @media (hover: hover) {
          &:hover {
-            text-decoration: underline;
+            text-decoration: none;
          }
       }
    }

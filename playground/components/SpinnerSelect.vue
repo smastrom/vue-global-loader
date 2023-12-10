@@ -44,6 +44,13 @@ const selectId = 'spinner_select'
    display: flex;
    flex-direction: column;
    background-color: var(--light-0);
+   transition: border-color 150ms ease-out;
+
+   @media (hover: hover) {
+      &:hover {
+         border-color: var(--dark-1);
+      }
+   }
 
    & label {
       font-size: var(--size-09);
@@ -104,6 +111,8 @@ const selectId = 'spinner_select'
    color: var(--light-1);
    cursor: pointer;
    transition: background-color 150ms ease-out;
+   text-align: center;
+   align-items: center;
 
    @media (hover: hover) {
       &:hover {
