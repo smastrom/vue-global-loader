@@ -1,19 +1,12 @@
 <script>
 import { defineComponent } from 'vue'
 
-defineComponent({ inheritAttrs: true })
+export default defineComponent({ inheritAttrs: true })
 </script>
 
 <template>
    <svg :class="m.Wrap" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path
-         d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
-         opacity=".25"
-      />
-      <path
-         d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"
-         :class="m.Ring"
-      />
+      <circle :class="m.Inner" cx="12" cy="12" r="0" />
    </svg>
 </template>
 
@@ -35,19 +28,23 @@ defineComponent({ inheritAttrs: true })
    }
 }
 
-.Ring {
-   transform-origin: center;
-   animation: KF 0.75s infinite linear;
+.Inner {
+   animation: KF 1.2s cubic-bezier(0.52, 0.6, 0.25, 0.99) infinite;
 }
 
 @keyframes KF {
+   0% {
+      r: 0;
+      opacity: 1;
+   }
    100% {
-      transform: rotate(360deg);
+      r: 11px;
+      opacity: 0;
    }
 }
 
 @media (prefers-reduced-motion: reduce) {
-   .Ring {
+   .Inner {
       animation: none;
    }
 }

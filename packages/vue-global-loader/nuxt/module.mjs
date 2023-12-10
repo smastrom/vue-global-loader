@@ -4,6 +4,7 @@ import {
    addComponentsDir,
    addImports,
    createResolver,
+   addComponent,
 } from '@nuxt/kit'
 import { defu } from 'defu'
 
@@ -43,7 +44,15 @@ const module = defineNuxtModule({
 
       addImports({ name: 'useGlobalLoader', as: 'useGlobalLoader', from: 'vue-global-loader' })
 
-      addComponentsDir({ path: resolver.resolve('../components') })
+      addComponentsDir({
+         path: resolver.resolve('../components/spinners'),
+         extensions: ['vue'],
+      })
+
+      addComponent({
+         name: 'GlobalLoader',
+         filePath: resolver.resolve('../components/GlobalLoader.vue'),
+      })
    },
 })
 

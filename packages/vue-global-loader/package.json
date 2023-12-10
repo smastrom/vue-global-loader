@@ -21,14 +21,50 @@
    "sideEffects": false,
    "type": "module",
    "exports": {
-      ".": {
-         "types": "./dist/index.d.ts",
-         "import": "./dist/index.js"
+      "./GlobalLoader.vue": {
+         "import": "./components/GlobalLoader.vue",
+         "types": "./components/index.d.ts"
+      },
+      "./BarsSpinner.vue": {
+         "import": "./components/spinners/BarsSpinner.vue",
+         "types": "./components/spinners/index.d.ts"
+      },
+      "./CircleSpinner.vue": {
+         "import": "./components/spinners/CircleSpinner.vue",
+         "types": "./components/spinners/index.d.ts"
+      },
+      "./DotsSpinner.vue": {
+         "import": "./components/spinners/DotsSpinner.vue",
+         "types": "./components/spinners/index.d.ts"
+      },
+      "./PulseSpinner.vue": {
+         "import": "./components/spinners/PulseSpinner.vue",
+         "types": "./components/spinners/index.d.ts"
+      },
+      "./RingSpinner.vue": {
+         "import": "./components/spinners/RingSpinner.vue",
+         "types": "./components/spinners/index.d.ts"
+      },
+      "./RingBarsSpinner.vue": {
+         "import": "./components/spinners/RingBarsSpinner.vue",
+         "types": "./components/spinners/index.d.ts"
+      },
+      "./RingDotSpinner.vue": {
+         "import": "./components/spinners/RingDotSpinner.vue",
+         "types": "./components/spinners/index.d.ts"
+      },
+      "./WaveSpinner.vue": {
+         "import": "./components/spinners/WaveSpinner.vue",
+         "types": "./components/spinners/index.d.ts"
       },
       "./nuxt": {
          "import": "./nuxt/module.mjs",
          "require": "./nuxt/module.cjs",
          "types": "./nuxt/index.d.ts"
+      },
+      ".": {
+         "types": "./dist/index.d.ts",
+         "import": "./dist/index.js"
       }
    },
    "module": "dist/index.js",

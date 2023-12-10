@@ -2,50 +2,6 @@ import * as esbuild from 'esbuild'
 
 import { exec, execSync } from 'child_process'
 import { readFileSync } from 'node:fs'
-import { readdir } from 'node:fs/promises'
-
-const internalComponents = ['GlobalLoaderImpl.vue', 'GlobalLoaderClientOnly.js']
-
-const components = await readdir('components').then((files) => {
-   let _internalComponents = 0
-   const _components = []
-
-   for (const file of files) {
-      if (internalComponents.includes(file)) {
-         _internalComponents++
-         continue
-      }
-      if (file.endsWith('.vue')) _components.push(file.replace('.vue', ''))
-   }
-
-   if (internalComponents.length !== _internalComponents) {
-      throw new Error('[build.js] - Internal components array contains misspelled imports!')
-   }
-
-   return _components
-})
-
-console.log('[build.js] - Vue Components:', components)
-
-/**
- * @param {string[]} names
- * @returns {string}
- */
-function getVueExports(names) {
-   return names
-      .map((name) => `export { default as ${name} } from "../components/${name}.vue";`)
-      .join('\n')
-}
-
-/**
- * @param {string[]} names
- * @returns {string}
- */
-function getVueDeclarations(names) {
-   return names
-      .map((name) => `export declare const ${name}: import("vue").DefineComponent<{}, {}, any>;`)
-      .join('\n')
-}
 
 /** @type {import('esbuild').Plugin} */
 const timePlugin = {
@@ -74,8 +30,7 @@ const dtsPlugin = {
          console.log('[esbuild-dts] - Bundling declaration...')
 
          childProcess = exec(
-            `tsc -p tsconfig.build.json && npx api-extractor run --local &&
-            echo '${getVueDeclarations(components)}' >> dist/index.d.ts`,
+            'tsc -p tsconfig.build.json && npx api-extractor run --local',
             (err) => {
                if (err && err.signal !== 'SIGTERM') console.error(err)
             }
@@ -136,9 +91,6 @@ export const buildOptions = {
    minify: false,
    outfile: 'dist/index.js',
    external: ['vue'],
-   footer: {
-      js: getVueExports(components),
-   },
    plugins: [timePlugin, dtsPlugin, checkConsolePlugin],
 }
 

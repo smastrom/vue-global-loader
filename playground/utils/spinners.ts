@@ -7,7 +7,7 @@ import {
    BarsSpinner,
    DotsSpinner,
    WaveSpinner,
-} from 'vue-global-loader'
+} from '#components'
 
 export const pkgSpinners = {
    CircleSpinner,

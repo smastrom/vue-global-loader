@@ -1,14 +1,14 @@
 <script>
 import { defineComponent } from 'vue'
 
-defineComponent({ inheritAttrs: true })
+export default defineComponent({ inheritAttrs: true })
 </script>
 
 <template>
    <svg :class="m.Wrap" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <circle :class="m.Anim_1" cx="4" cy="12" r="3" />
-      <circle :class="[m.Anim_1, m.Anim_2]" cx="12" cy="12" r="3" />
-      <circle :class="[m.Anim_1, m.Anim_3]" cx="20" cy="12" r="3" />
+      <rect :class="m.Anim_1" x="1" y="1" width="6" height="22" />
+      <rect :class="[m.Anim_1, m.Anim_2]" x="9" y="1" width="6" height="22" />
+      <rect :class="[m.Anim_1, m.Anim_3]" x="17" y="1" width="6" height="22" />
    </svg>
 </template>
 
@@ -29,8 +29,10 @@ defineComponent({ inheritAttrs: true })
       width: 90px;
    }
 }
+
 .Anim_1 {
-   animation: KF 1.2s linear infinite;
+   animation: KF 0.8s linear infinite;
+   animation-delay: -0.8s;
 }
 .Anim_2 {
    animation-delay: -0.65s;
@@ -38,13 +40,16 @@ defineComponent({ inheritAttrs: true })
 .Anim_3 {
    animation-delay: -0.5s;
 }
+
 @keyframes KF {
-   93.75%,
-   100% {
-      r: 3px;
+   0% {
+      y: 1px;
+      height: 22px;
    }
-   46.875% {
-      r: 0.2px;
+   93.75% {
+      y: 5px;
+      height: 14px;
+      opacity: 0.2;
    }
 }
 

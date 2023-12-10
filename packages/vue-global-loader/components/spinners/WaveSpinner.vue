@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from 'vue'
 
-defineComponent({ inheritAttrs: true })
+export default defineComponent({ inheritAttrs: true })
 </script>
 
 <template>
