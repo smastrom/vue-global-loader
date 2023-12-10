@@ -14,12 +14,14 @@ export default defineConfig({
          framework: 'vue',
          bundler: 'vite',
          viteConfig: {
+            optimizeDeps: {
+               include: ['vue-global-loader'],
+            },
             server: {
                port: 5176,
             },
             resolve: {
                alias: {
-                  '@/support': resolve(__dirname, './cypress/support'),
                   '@': resolve(__dirname, './'),
                },
             },

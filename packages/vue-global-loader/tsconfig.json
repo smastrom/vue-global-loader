@@ -18,5 +18,6 @@
          "vue-global-loader": ["./index.ts"]
       }
    },
-   "include": ["."]
+   "include": ["."],
+   "exclude": ["dist"]
 }
