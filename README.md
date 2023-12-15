@@ -8,7 +8,7 @@
 
 <br />
 
-> :bulb: Please note that this package only works with [Vite](https://vitejs.dev/) and [Nuxt](https://nuxt.com/) setups. Usage without a build-step is not supported. Testing against legacy bundlers (Vue CLI, Webpack) has not been performed.
+> :bulb: Please note that this package only works with [Vite](https://vitejs.dev/) and [Nuxt](https://nuxt.com/) setups. Usage without a build-step is not supported. Usage against legacy bundlers (Vue CLI, Webpack) has not been tested.
 
 <br />
 
@@ -120,7 +120,7 @@ import { useGlobalLoader } from 'vue-global-loader'
 
 const { displayLoader, destroyLoader, isLoading } = useGlobalLoader({
   screenReaderMessage:
-    'Signing-in, you will be redirected to the dashboard, please wait...'
+    'Signing-in, redirecting to the dashboard, please wait...'
 })
 
 const router = useRouter()
@@ -207,7 +207,7 @@ import PulseSpinner from 'vue-global-loader/PulseSpinner.vue'
 </template>
 ```
 
-There's no need to style the spinners (e.g. the spinner should be 140px wide on desktop, 110px wide on mobile devices, animations should be disabled if users prefer reduced motion, etc). This is already taken care for you.
+There's no need to style the spinners (e.g. the spinner should be 110px wide on desktop, 80px wide on mobile devices, animations should be disabled if users prefer reduced motion, etc). This is already taken care for you.
 
 Each spinner already has its own CSS and inherits the `foregroundColor` option specified in your config. You can append a class to override its styles, but it's not recommended and it's better to use a custom spinner.
 
