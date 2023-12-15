@@ -16,8 +16,8 @@
    "devDependencies": {
       "concurrently": "^8.2.2",
       "husky": "^8.0.3",
-      "lint-staged": "^15.1.0",
-      "prettier": "^3.0.3",
+      "lint-staged": "^15.2.0",
+      "prettier": "^3.1.1",
       "prettier-plugin-jsdoc": "^1.1.1"
    },
    "lint-staged": {

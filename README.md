@@ -1,6 +1,6 @@
 # Vue Global Loader
 
-![npm](https://img.shields.io/npm/v/vue-global-loader?color=46c119) ![dependencies](https://img.shields.io/badge/dependencies-0-success) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/vue-global-loader?color=success) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/smastrom/vue-global-loader/tests.yml?branch=main&label=tests)
+![npm](https://img.shields.io/npm/v/vue-global-loader?color=46c119) ![dependencies](https://img.shields.io/badge/dependencies-0-success) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/smastrom/vue-global-loader/tests.yml?branch=main&label=tests)
 
 ### Global loaders made easy for Vue and Nuxt.
 
@@ -8,7 +8,7 @@
 
 <br />
 
-> :bulb: Please note that this package only works with [Vite](https://vitejs.dev/) and [Nuxt](https://nuxt.com/) setups. Usage without a build-step is not supported. Testing against legacy bundlers (Vue CLI, Webpack) has not been performed.
+> :bulb: Please note that this package only works with [Vite](https://vitejs.dev/) and [Nuxt](https://nuxt.com/) setups. Usage without a build-step is not supported.
 
 <br />
 
@@ -120,7 +120,7 @@ import { useGlobalLoader } from 'vue-global-loader'
 
 const { displayLoader, destroyLoader, isLoading } = useGlobalLoader({
   screenReaderMessage:
-    'Signing-in, you will be redirected to the dashboard, please wait...'
+    'Signing-in, redirecting to the dashboard, please wait...'
 })
 
 const router = useRouter()
@@ -207,7 +207,7 @@ import PulseSpinner from 'vue-global-loader/PulseSpinner.vue'
 </template>
 ```
 
-There's no need to style the spinners (e.g. the spinner should be 140px wide on desktop, 110px wide on mobile devices, animations should be disabled if users prefer reduced motion, etc). This is already taken care for you.
+There's no need to style the spinners (e.g. the spinner should be 110px wide on desktop, 80px wide on mobile devices, animations should be disabled if users prefer reduced motion, etc). This is already taken care for you.
 
 Each spinner already has its own CSS and inherits the `foregroundColor` option specified in your config. You can append a class to override its styles, but it's not recommended and it's better to use a custom spinner.
 
@@ -390,7 +390,7 @@ Use it when you think it's better for the user to not interact with the rest of 
 - To display a loader while your app JS is loading. Use the [SPA Loading Templates](#spa-loading-templates) in plain HTML for that (see below).
 - Server-side rendered pages: they are already meant to send the proper content to the client and avoid spinners.
 - Non-critical async operations that are quick and obvious, in such case a local loader is better (e.g. spinner in the newsletter form submit button).
-- Async operations meant to feed the content of small sub-components, in such case [Suspense](https://vuejs.org/guide/built-ins/suspense.html) is the way to go.
+- Async operations meant to feed the content of small sub-components, in such case [Suspense](https://vuejs.org/guide/built-ins/suspense.html) is preferred.
 
 ## SPA Loading Templates
 
@@ -398,13 +398,13 @@ For convenience, ready-made HTML templates for each spinner shipped with this pa
 
 They can be used to display a global loader that has the same appearance of the one used in your app to be displayed while the app JS is loading.
 
-### Vite SPA
+### Vite
 
-Paste the markup as a direct child of the `body` in the `index.html` file and remove it in a top-level (App.vue) _onMounted_ hook via `document.getElementById('spa_loading_template').remove()`.
+Copy/paste the file content markup as a direct child of the `body` in the `index.html` file and remove it in a top-level (App.vue) _onMounted_ hook via `document.getElementById('spa_loading_template').remove()`.
 
 ### Nuxt
 
-Download the desired html file, rename it and place it in `@/app/spa-loading-template.html`.
+Download the html file you prefer, rename it to `spa-loading-template.html` and place it in `@/app/spa-loading-template.html`.
 
 ## Thanks
 
