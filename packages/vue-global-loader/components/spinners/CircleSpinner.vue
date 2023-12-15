@@ -12,7 +12,7 @@ export default defineComponent({ inheritAttrs: true })
 
 <style module="m">
 .Wrap {
-   width: 140px;
+   width: 100px;
    stroke: var(--v-gl-fg-color);
    transform-origin: center;
    animation: KF 2s linear infinite;
@@ -20,13 +20,13 @@ export default defineComponent({ inheritAttrs: true })
 
 @media (max-width: 475px) {
    .Wrap {
-      width: 110px;
+      width: 80px;
    }
 }
 
 @media (max-width: 375px) {
    .Wrap {
-      width: 90px;
+      width: 70px;
    }
 }
 
