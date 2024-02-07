@@ -84,7 +84,7 @@ app.use(globalLoader, {
 app.mount('#app')
 ```
 
-**app.vue**
+**App.vue**
 
 ```vue
 <script setup>
