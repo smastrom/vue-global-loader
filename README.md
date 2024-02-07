@@ -30,7 +30,7 @@ This package simplifies the usage of a single, top-level global loader by:
 - Providing a practical API customizable via few key props (get started in 10 seconds)
 - Properly disable user interactions with the rest of the app while the loader is displayed
 - Announcing a screen reader message when the loader is displayed
-- Dynamically update options from anywhere in the app and set options scoped to the current loader
+- Dynamically update options from anywhere in the app and apply options only to a specific loader
 
 ## Table of Contents
 
@@ -63,11 +63,11 @@ yarn add vue-global-loader
 npm i vue-global-loader
 ```
 
-## Usage
+### Vite
 
-### Getting Started
+> :bulb: See [↓ below](#nuxt) for **Nuxt**
 
-**1. Vite - main.js**
+**main.js**
 
 ```js
 import { createApp } from 'vue'
@@ -77,22 +77,14 @@ import App from './App.vue'
 
 const app = createApp(App)
 
-app.use(globalLoader) // <- Place it at the BEGINNING of the app.use() chain
+app.use(globalLoader, {
+  // Options
+})
 
 app.mount('#app')
 ```
 
-**1. or Nuxt - nuxt.config.ts**
-
-```ts
-export default defineNuxtConfig({
-  modules: ['vue-global-loader/nuxt']
-})
-```
-
-**2. App.vue (Vite) / app.vue (Nuxt)**
-
-> :bulb: No need to state the imports if using **Nuxt** (everything is auto-imported)
+**app.vue**
 
 ```vue
 <script setup>
@@ -105,13 +97,40 @@ import CircleSpinner from 'vue-global-loader/CircleSpinner.vue'
     <CircleSpinner />
   </GlobalLoader>
 
-  <!-- RouterView, NuxtLayout, NuxtPage... -->
+  <!-- RouterView -->
+</template>
+```
+
+### Nuxt
+
+**nuxt.config.ts**
+
+```ts
+export default defineNuxtConfig({
+  modules: ['vue-global-loader/nuxt'],
+  globalLoader: {
+    // Options
+  }
+})
+```
+
+**app.vue**
+
+```vue
+<template>
+  <GlobalLoader>
+    <CircleSpinner />
+  </GlobalLoader>
+
+  <!-- NuxtLayout, NuxtPage... -->
 </template>
 ```
 
 ### Usage
 
 `pages/login.vue`
+
+> :bulb: No need to state the imports if using **Nuxt** (everything is auto-imported)
 
 ```vue
 <script setup>
@@ -143,6 +162,8 @@ async function signIn() {
 ```
 
 `pages/dashboard.vue`
+
+> :bulb: No need to state the imports if using **Nuxt** (everything is auto-imported)
 
 ```vue
 <script setup>
@@ -209,7 +230,9 @@ import PulseSpinner from 'vue-global-loader/PulseSpinner.vue'
 
 There's no need to style the spinners (e.g. the spinner should be 110px wide on desktop, 80px wide on mobile devices, animations should be disabled if users prefer reduced motion, etc). This is already taken care for you.
 
-Each spinner already has its own CSS and inherits the `foregroundColor` option specified in your config. You can append a class to override its styles, but it's not recommended and it's better to use a custom spinner.
+Each spinner already has its own CSS and inherits the `foregroundColor` option specified in your config or scoped options.
+
+You may append a class to override its styles, but I wouldn't recommend it. Instead, you should use a custom spinner.
 
 #### Custom Spinners
 
