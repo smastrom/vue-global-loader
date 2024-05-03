@@ -5,6 +5,7 @@ import {
    addImports,
    createResolver,
    addComponent,
+   extendViteConfig,
 } from '@nuxt/kit'
 import { defu } from 'defu'
 
@@ -52,6 +53,15 @@ export default defineNuxtModule({
       addComponent({
          name: 'GlobalLoader',
          filePath: resolver.resolve('../components/GlobalLoader.vue'),
+      })
+
+      extendViteConfig((config) => {
+         config.optimizeDeps ||= {}
+         config.optimizeDeps.include ||= []
+
+         if (!config.optimizeDeps.include.includes('vue-global-loader')) {
+            config.optimizeDeps.include.push('vue-global-loader')
+         }
       })
    },
 })
