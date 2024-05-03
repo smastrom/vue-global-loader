@@ -81,7 +81,7 @@ export function useGlobalLoader(scopedOptions: Partial<GlobalLoaderOptions> = {}
       }
    }
 
-   const store = inject(injectionKey)!
+   const store = inject(injectionKey, new GlobalLoaderStore(scopedOptions))
 
    return {
       /** Display the global loader with any scoped option set in `useGlobalLoader` parameter. */

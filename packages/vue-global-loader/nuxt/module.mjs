@@ -8,7 +8,7 @@ import {
 } from '@nuxt/kit'
 import { defu } from 'defu'
 
-const module = defineNuxtModule({
+export default defineNuxtModule({
    meta: {
       name: 'nuxt/vue-global-loader',
       configKey: 'globalLoader',
@@ -16,7 +16,7 @@ const module = defineNuxtModule({
          nuxt: '>=3.0.0',
       },
    },
-   async setup(moduleOptions, nuxt) {
+   setup(moduleOptions, nuxt) {
       nuxt.options.runtimeConfig.public.globalLoader = defu(
          nuxt.options.runtimeConfig.public.globalLoader || {},
          moduleOptions
@@ -55,5 +55,3 @@ const module = defineNuxtModule({
       })
    },
 })
-
-export { module as default }

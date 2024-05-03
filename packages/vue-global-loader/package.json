@@ -1,6 +1,6 @@
 {
    "name": "vue-global-loader",
-   "version": "0.9.7",
+   "version": "0.9.8",
    "private": false,
    "description": "Global loaders made easy for Vue and Nuxt",
    "keywords": [
