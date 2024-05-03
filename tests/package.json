@@ -8,17 +8,17 @@
    "dependencies": {
       "tinycolor2": "^1.6.0",
       "vue-global-loader": "workspace:*",
-      "vue-router": "^4.2.5"
+      "vue-router": "^4.3.2"
    },
    "devDependencies": {
-      "@types/node": "^20.10.4",
+      "@types/node": "^20.12.8",
       "@types/tinycolor2": "^1.4.6",
-      "@vitejs/plugin-vue": "^4.5.2",
+      "@vitejs/plugin-vue": "^5.0.4",
       "@vitejs/plugin-vue-jsx": "^3.1.0",
-      "cypress": "^13.6.1",
-      "typescript": "^5.3.3",
-      "vite": "^4.5.1",
-      "vue": "^3.3.11",
-      "vue-tsc": "^1.8.25"
+      "cypress": "^13.8.1",
+      "typescript": "^5.4.5",
+      "vite": "^5.2.11",
+      "vue": "^3.4.26",
+      "vue-tsc": "^2.0.16"
    }
 }
