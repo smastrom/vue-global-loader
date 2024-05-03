@@ -10,12 +10,12 @@
       "postinstall": "nuxt prepare"
    },
    "devDependencies": {
-      "@nuxt/devtools": "latest",
-      "browserslist": "^4.22.2",
-      "lightningcss": "^1.22.1",
-      "nuxt": "^3.8.2",
-      "vue": "^3.3.11",
-      "vue-router": "^4.2.5"
+      "@nuxt/devtools": "^1.2.0",
+      "browserslist": "^4.23.0",
+      "lightningcss": "^1.24.1",
+      "nuxt": "^3.11.2",
+      "vue": "^3.4.26",
+      "vue-router": "^4.3.2"
    },
    "dependencies": {
       "vue-global-loader": "workspace:^"
