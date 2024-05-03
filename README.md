@@ -228,11 +228,17 @@ import PulseSpinner from 'vue-global-loader/PulseSpinner.vue'
 </template>
 ```
 
-There's no need to style the spinners (e.g. the spinner should be 110px wide on desktop, 80px wide on mobile devices, animations should be disabled if users prefer reduced motion, etc). This is already taken care for you.
-
 Each spinner already has its own CSS and inherits the `foregroundColor` option specified in your config or scoped options.
 
-You may append a class to override its styles, but I wouldn't recommend it. Instead, you should use a custom spinner.
+If you think the spinner size is too big, add a class or inline styles to it and they'll be forwarded to the root `svg` element:
+
+```vue
+<template>
+  <GlobalLoader>
+    <PulseSpinner style="width: 60px" />
+  </GlobalLoader>
+</template>
+```
 
 #### Custom Spinners
 
